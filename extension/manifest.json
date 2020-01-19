@@ -16,7 +16,7 @@
     "activeTab"
   ],
   "browser_action": {
-      "default_title": "Print this page",
+      "default_title": "Citation Biase",
       "default_icon": "print_16x16.png"
   },
   "manifest_version": 2
