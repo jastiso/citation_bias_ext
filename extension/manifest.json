@@ -1,7 +1,13 @@
 {
-  "name": "Print this page",
-  "description": "Adds a print button to the browser.",
+  "name": "Citation Bias",
+  "description": "Adds probabilistic gender and race info to Google scholar",
   "version": "1.2",
+
+  "content_scripts": [{
+    "css": ["style.css"],
+    "js": ["jquery-3.4.1.min.js","content.js"],
+    "matches": ["https://scholar.google.com/*"]
+  }],
   "background": {
     "scripts": ["background.js"],
     "persistent": false
