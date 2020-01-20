@@ -10,14 +10,14 @@ $(document).ready(function() {
     if (!($(this).hasClass('gs_ctc') || $(this).hasClass('gs_ctu'))){
       fetch(api_req)
       .then( (data) => data.json())
-      .then( (info) => disp(info, api_req))
+      .then( (info) => get_names(info))
       .catch(function(error) {
         // If there is any error you will catch them here
         console.log(error)
       })
       
-      // display function
-      const disp = (info) => {
+      // get the names from crossref
+      const get_names = (info) => {
         if (info.status == "ok"){
           // drop F1000 reviews, and check if correct match wasnt first result
           var title = info.message.items[0].title[0]
@@ -39,22 +39,38 @@ $(document).ready(function() {
           }
 
           // clean up names
-          FA_given = FA_given.replace('.', ' ').split(' ')[0]
-          LA_given = LA_given.replace('.', ' ').split(' ')[0]
+          FA_given = FA_given.replace('.', ' ').replace(/"/g, "").split(' ')[0]
+          LA_given = LA_given.replace('.', ' ').replace(/"/g, "").split(' ')[0]
+          FA_family = FA_family.replace('.', ' ').replace(/"/g, "")
+          LA_family = LA_family.replace('.', ' ').replace(/"/g, "")
 
-          // display
-          $( "<p>First author:" + FA_given + " " + FA_family + "; Last author: " + LA_given + " " +
-           LA_family + "</p>" ).insertAfter($(this).parent())
-          $( '<img src="https://emojis.slackmojis.com/emojis/images/1578178080/7438/verified.png?1578178080" />' )
-          .insertAfter($(this).parent())
-          $( '<img src="https://emojis.slackmojis.com/emojis/images/1578178080/7438/verified.png?1578178080" />' )
-          .insertAfter($(this).parent())
-          $( '<img src="https://emojis.slackmojis.com/emojis/images/1578178080/7438/verified.png?1578178080" />' )
-          .insertAfter($(this).parent())
-          $( '<img src="https://emojis.slackmojis.com/emojis/images/1578178080/7438/verified.png?1578178080" />' )
-          .insertAfter($(this).parent())  
-
+          // query genderize.io
+          const gen_url = "https://api.genderize.io?name[]="
+          fetch(gen_url + FA_given + "&name[]=" + LA_given)
+          .then( (data) => data.json())
+          .then( (info) => get_gender(info, FA_given, FA_family, LA_given, LA_family))
         }
+      }
+
+      // get the gender data from genderize.io
+      const get_gender = (info, FA_given, FA_family, LA_given, LA_family) => {
+        FA_gen = JSON.stringify(info[0].gender)
+        FA_prob = JSON.stringify(info[0].probability)
+        LA_gen = JSON.stringify(info[1].gender)
+        LA_prob = JSON.stringify(info[1].probability)
+
+         // display
+        $( "<p>First author:" + FA_given + " " + FA_family + "with gender: " + FA_gen + " " + FA_prob
+        + "; Last author: " + LA_given + " " + LA_family + "with gender: " + LA_gen + " " + LA_prob +
+         "</p>" ).insertAfter($(this).parent())
+        $( '<img src="https://emojis.slackmojis.com/emojis/images/1578178080/7438/verified.png?1578178080" />' )
+        .insertAfter($(this).parent())
+        $( '<img src="https://emojis.slackmojis.com/emojis/images/1578178080/7438/verified.png?1578178080" />' )
+        .insertAfter($(this).parent())
+        $( '<img src="https://emojis.slackmojis.com/emojis/images/1578178080/7438/verified.png?1578178080" />' )
+        .insertAfter($(this).parent())
+        $( '<img src="https://emojis.slackmojis.com/emojis/images/1578178080/7438/verified.png?1578178080" />' )
+        .insertAfter($(this).parent())  
       }
     }
   }) 
