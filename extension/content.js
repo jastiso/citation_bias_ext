@@ -33,6 +33,10 @@ $(document).ready(function() {
           var LA_given = JSON.stringify(info.message.items[cnt].author[info.message.items[cnt].author.length-1].given)
           var LA_family = JSON.stringify(info.message.items[cnt].author[info.message.items[cnt].author.length-1].family)
           
+          // clean up names
+          FA_given = FA_given.replace('.', ' ').split(' ')[0]
+          LA_given = LA_given.replace('.', ' ').split(' ')[0]
+
           // display
           $( "<p>First author:" + FA_given + " " + FA_family + "; Last author: " + LA_given + " " +
            LA_family + "</p>" ).insertAfter($(this).parent())
