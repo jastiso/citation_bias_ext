@@ -41,6 +41,12 @@ $(document).ready(function() {
           // clean up names
           FA_given = FA_given.replace('.', ' ').replace(/"/g, "").split(' ')[0]
           LA_given = LA_given.replace('.', ' ').replace(/"/g, "").split(' ')[0]
+          if (FA_given.length == 1){
+            FA_given = ""
+          }
+          if (LA_given.length == 1){
+            LA_given = ""
+          }
           FA_family = FA_family.replace('.', ' ').replace(/"/g, "")
           LA_family = LA_family.replace('.', ' ').replace(/"/g, "")
 
@@ -60,8 +66,8 @@ $(document).ready(function() {
         LA_prob = JSON.stringify(info[1].probability)
 
          // display
-        $( "<p>First author:" + FA_given + " " + FA_family + "with gender: " + FA_gen + " " + FA_prob
-        + "; Last author: " + LA_given + " " + LA_family + "with gender: " + LA_gen + " " + LA_prob +
+        $( "<p>First author:" + FA_given + " " + FA_family + " gender: " + FA_gen + " " + FA_prob
+        + "; Last author: " + LA_given + " " + LA_family + " gender: " + LA_gen + " " + LA_prob +
          "</p>" ).insertAfter($(this).parent())
         $( '<img src="https://emojis.slackmojis.com/emojis/images/1578178080/7438/verified.png?1578178080" />' )
         .insertAfter($(this).parent())
