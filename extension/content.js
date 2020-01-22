@@ -12,14 +12,32 @@ $(document).ready(function() {
 
     // check that isnt a [BOOK] or [CITATION] tag
     if (!($(this).hasClass('gs_ctc') || $(this).hasClass('gs_ctu'))){
-      $( '<div class="wrapper" data-anim="base wrapper"><div class="circle" data-anim="base left"></div><div class="circle" data-anim="base right"></div></div>' )
+      
+      $( '<div class="box"><div class="clip1"><div class="slice1"></div></div><div class="outline"><div class="circle"></div></div><div class="clip2"><div class="slice2"></div></div></div>' )
       .insertAfter($(this).parent())
-      $( '<div class="wrapper" data-anim="base wrapper"><div class="circle" data-anim="base left"></div><div class="circle" data-anim="base right"></div></div>' )
+      $( '<div class="box"><div class="clip1"><div class="slice1"></div></div><div class="outline"><div class="circle"></div></div><div class="clip2"><div class="slice2"></div></div></div>' )
       .insertAfter($(this).parent())
-      $( '<div class="wrapper" data-anim="base wrapper"><div class="circle" data-anim="base left"></div><div class="circle" data-anim="base right"></div></div>' )
+      $( '<div class="box"><div class="clip1"><div class="slice1"></div></div><div class="outline"><div class="circle"></div></div><div class="clip2"><div class="slice2"></div></div></div>' )
       .insertAfter($(this).parent())
-      $( '<div class="wrapper" data-anim="base wrapper"><div class="circle" data-anim="base left"></div><div class="circle" data-anim="base right"></div></div>' )
+      $( '<div class="box"><div class="clip1"><div class="slice1"></div></div><div class="outline"><div class="circle"></div></div><div class="clip2"><div class="slice2"></div></div></div>' )
       .insertAfter($(this).parent())
+
+      function rotate(element, degree) {
+        element.css({
+            '-webkit-transform': 'rotate(' + degree + 'deg)',
+            '-moz-transform': 'rotate(' + degree + 'deg)',
+            '-ms-transform': 'rotate(' + degree + 'deg)',
+            '-o-transform': 'rotate(' + degree + 'deg)',
+            'transform': 'rotate(' + degree + 'deg)',
+            'zoom': 1
+        });
+      }
+
+      // set the transition
+      rotate($(".slice1"), 45+180);
+      rotate($(".slice2"), 45);
+
+
      /* fetch(api_req)
       .then( (data) => data.json())
       .then( (info) => get_names(info))
