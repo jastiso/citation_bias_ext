@@ -12,13 +12,13 @@ $(document).ready(function() {
 
     // check that isnt a [BOOK] or [CITATION] tag
     if (!($(this).hasClass('gs_ctc') || $(this).hasClass('gs_ctu'))){
-      $( '<div class="wrapper" data-anim="base wrapper"><div class="circle" data-anim="base left"></div></div>' )
+      $( '<div class="wrapper" data-anim="base wrapper"><div class="circle" data-anim="base left"></div><div class="circle" data-anim="base right"></div></div>' )
       .insertAfter($(this).parent())
-      $( '<div class="wrapper" data-anim="base wrapper"><div class="circle" data-anim="base left"></div></div>' )
+      $( '<div class="wrapper" data-anim="base wrapper"><div class="circle" data-anim="base left"></div><div class="circle" data-anim="base right"></div></div>' )
       .insertAfter($(this).parent())
-      $( '<div class="wrapper" data-anim="base wrapper"><div class="circle" data-anim="base left"></div></div>' )
+      $( '<div class="wrapper" data-anim="base wrapper"><div class="circle" data-anim="base left"></div><div class="circle" data-anim="base right"></div></div>' )
       .insertAfter($(this).parent())
-      $( '<div class="wrapper" data-anim="base wrapper"><div class="circle" data-anim="base left"></div></div>' )
+      $( '<div class="wrapper" data-anim="base wrapper"><div class="circle" data-anim="base left"></div><div class="circle" data-anim="base right"></div></div>' )
       .insertAfter($(this).parent())
      /* fetch(api_req)
       .then( (data) => data.json())
