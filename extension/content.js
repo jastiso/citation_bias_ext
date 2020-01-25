@@ -1,3 +1,60 @@
+// functions
+function rotate(element, degree) {
+  element.css({
+      '-webkit-transform': 'rotate(' + degree + 'deg)',
+      '-moz-transform': 'rotate(' + degree + 'deg)',
+      '-ms-transform': 'rotate(' + degree + 'deg)',
+      '-o-transform': 'rotate(' + degree + 'deg)',
+      'transform': 'rotate(' + degree + 'deg)',
+      'zoom': 1
+  });
+}
+
+function display(percent, element) {
+  var angle = 360 * percent
+
+  if (angle <= 180) {
+      var a1 = angle;
+      var a2 = 0;
+  } else {
+       var a2 = angle - 180;
+       var a1 = 180;
+  }
+
+  // set the transition
+  rotate($(".slice1"), a1);
+  rotate($(".slice2"), a2);
+
+  $( '<div class="box"><div class="circle outer"></div><div class="clip1"><div class="slice1"></div></div><div class="clip2"><div class="slice2"></div></div><div class="circle inner"></div></div>' )
+      .insertAfter(element.parent())
+}
+
+// get the gender data from genderize.io
+const get_gender = (info, FA_given, LA_given, FA_family, LA_family) => {
+  if (FA_given != "" & LA_given != ""){
+    FA_gen = JSON.stringify(info[0].gender)
+    FA_prob = JSON.stringify(info[0].probability)
+    LA_gen = JSON.stringify(info[1].gender)
+    LA_prob = JSON.stringify(info[1].probability)
+  } else if (FA_given == "" & LA_given != ""){
+    FA_gen = ""
+    FA_prob = ""
+    LA_gen = JSON.stringify(info[0].gender)
+    LA_prob = JSON.stringify(info[0].probability)
+  } else if (FA_given == "" & LA_given != ""){
+    LA_gen = ""
+    LA_prob = ""
+    FA_gen = JSON.stringify(info[0].gender)
+    FA_prob = JSON.stringify(info[0].probability)
+  }
+
+  // display
+  $( "<p>First author:" + FA_given + " " + FA_family + " gender: " + FA_gen + " " + FA_prob
+  + "; Last author: " + LA_given + " " + LA_family + " gender: " + LA_gen + " " + LA_prob +
+   "</p>" ).insertAfter($(this).parent())
+}
+
+
 // get all papers on the page
 $(document).ready(function() {
   
@@ -12,33 +69,8 @@ $(document).ready(function() {
 
     // check that isnt a [BOOK] or [CITATION] tag
     if (!($(this).hasClass('gs_ctc') || $(this).hasClass('gs_ctu'))){
-      
-      $( '<div class="box"><div class="clip1"><div class="slice1"></div></div><div class="outline"><div class="circle"></div></div><div class="clip2"><div class="slice2"></div></div></div>' )
-      .insertAfter($(this).parent())
-      $( '<div class="box"><div class="clip1"><div class="slice1"></div></div><div class="outline"><div class="circle"></div></div><div class="clip2"><div class="slice2"></div></div></div>' )
-      .insertAfter($(this).parent())
-      $( '<div class="box"><div class="clip1"><div class="slice1"></div></div><div class="outline"><div class="circle"></div></div><div class="clip2"><div class="slice2"></div></div></div>' )
-      .insertAfter($(this).parent())
-      $( '<div class="box"><div class="clip1"><div class="slice1"></div></div><div class="outline"><div class="circle"></div></div><div class="clip2"><div class="slice2"></div></div></div>' )
-      .insertAfter($(this).parent())
 
-      function rotate(element, degree) {
-        element.css({
-            '-webkit-transform': 'rotate(' + degree + 'deg)',
-            '-moz-transform': 'rotate(' + degree + 'deg)',
-            '-ms-transform': 'rotate(' + degree + 'deg)',
-            '-o-transform': 'rotate(' + degree + 'deg)',
-            'transform': 'rotate(' + degree + 'deg)',
-            'zoom': 1
-        });
-      }
-
-      // set the transition
-      rotate($(".slice1"), 45+180);
-      rotate($(".slice2"), 45);
-
-
-     /* fetch(api_req)
+      fetch(api_req)
       .then( (data) => data.json())
       .then( (info) => get_names(info))
       .catch(function(error) {
@@ -83,52 +115,37 @@ $(document).ready(function() {
           // query genderize.io
           const gen_url = "https://api.genderize.io?name"
           if (FA_given != "" & LA_given != "")
-            fetch(gen_url + "[]=" + FA_given + "&name[]=" + LA_given)
+            gen_url = gen_url + "[]=" + FA_given + "&name[]=" + LA_given
+            fetch(gen_url)
             .then( (data) => data.json())
-            .then( (info) => get_gender(info, FA_given, FA_family, LA_given, LA_family))
-        } else if (FA_given == "" & LA_given != ""){
-          fetch(gen_url + "=" + LA_given)
-          .then( (data) => data.json())
-          .then( (info) => get_gender(info, FA_given, FA_family, LA_given, LA_family))
-        } else if (FA_given != "" & LA_given == ""){
-          fetch(gen_url + "=" + FA_given)
-          .then( (data) => data.json())
-          .then( (info) => get_gender(info, FA_given, FA_family, LA_given, LA_family))
-        }
+            .then( (info) => get_gender(info, FA_given, LA_given, FA_family, LA_family))
+
+          } else if (FA_given == "" & LA_given != ""){
+           gen_url = gen_url + "=" + LA_given
+          } else if (FA_given != "" & LA_given == ""){
+            gen_url = gen_url + "=" + FA_given
+          }
+          console.log(gen_url)
+          
+          const race_url = 'https:///v2.namsor.com/NamSorAPIv2/api2/json/'
+          // first get country
+          // fetch(race_url + '/origin/' + FA_given + '/' + FA_family)
+          // .then( (data) => data.json())
+          // .then( (info) => get_country(info, FA_given, FA_family))
+
+          // fetch(race_url + '/origin/' + LA_given + '/' + LA_family)
+          // .then( (data) => data.json())
+          // .then( (info) => get_country(info, LA_given, LA_family))
+          
+          // // then get race
+          // fetch(race_url + '/diaspora/' + country + '/' + FA_given + '/' + FA_family)
+          // .then( (data) => data.json())
+          // .then( (info) => get_race(info, FA_given, FA_family))
+
+          // fetch(race_url + '/diaspora/' + country + '/' + LA_given + '/' + LA_family)
+          // .then( (data) => data.json())
+          // .then( (info) => get_race(info, LA_given, LA_family)) 
       }
-
-      // get the gender data from genderize.io
-      const get_gender = (info, FA_given, FA_family, LA_given, LA_family) => {
-        if (FA_given != "" & LA_given != ""){
-          FA_gen = JSON.stringify(info[0].gender)
-          FA_prob = JSON.stringify(info[0].probability)
-          LA_gen = JSON.stringify(info[1].gender)
-          LA_prob = JSON.stringify(info[1].probability)
-        } else if (FA_given == "" & LA_given != ""){
-          FA_gen = ""
-          FA_prob = ""
-          LA_gen = JSON.stringify(info[0].gender)
-          LA_prob = JSON.stringify(info[0].probability)
-        } else if (FA_given == "" & LA_given != ""){
-          LA_gen = ""
-          LA_prob = ""
-          FA_gen = JSON.stringify(info[0].gender)
-          FA_prob = JSON.stringify(info[0].probability)
-        }
-
-         // display
-        $( "<p>First author:" + FA_given + " " + FA_family + " gender: " + FA_gen + " " + FA_prob
-        + "; Last author: " + LA_given + " " + LA_family + " gender: " + LA_gen + " " + LA_prob +
-         "</p>" ).insertAfter($(this).parent())
-        $( '<div class="wrapper" data-anim="base wrapper"><div class="circle" data-anim="base left"></div><div class="circle" data-anim="base right"></div></div>' )
-        .insertAfter($(this).parent())
-        $( '<img src="https://emojis.slackmojis.com/emojis/images/1578178080/7438/verified.png?1578178080" />' )
-        .insertAfter($(this).parent())
-        $( '<img src="https://emojis.slackmojis.com/emojis/images/1578178080/7438/verified.png?1578178080" />' )
-        .insertAfter($(this).parent())
-        $( '<img src="https://emojis.slackmojis.com/emojis/images/1578178080/7438/verified.png?1578178080" />' )
-        .insertAfter($(this).parent())  
-      } */
     } 
   }) 
 })

@@ -1,34 +1,40 @@
 .box{
   position:static;
-  top:0;left:0;
-  width:25px;
-  height:25px;
+  top:0;
+  left:0;
+  width:20px;
+  height:20px;
   display: inline-block; 
   vertical-align: top;
-}
-
-.outline {
-  width: 16px;
-  height: 16px;
-  border: 1px solid grey;
-  border-radius: 8px;
-  position: absolute;
-  clip-path: circle(100%);
-  display: inline-block; 
-  vertical-align: top;
+  padding-right: 5px;
+  z-index: 1;
 }
 
 .circle {
-  width: 10px;
-  height: 10px;
-  background-color: white;
   border-radius: 10px;
   position: absolute;
   clip-path: circle(100%);
   display: inline-block; 
-  vertical-align: top;
-  z-index: 1;
+  vertical-align: middle;
 }
+
+.inner {
+  width: 14px;
+  height: 14px;
+  background-color: white;
+  text-align: center;
+  margin-top: 3px;
+  margin-left: 3px;
+  z-index: 3;
+}
+
+.outer {
+  width: 20px;
+  height: 20px;
+  /* background-color: grey; */
+  z-index: 2;
+}
+
 
 .clip1 {
   position:absolute;
@@ -36,7 +42,7 @@
   height:20px;
   clip:rect(0px,20px,20px,10px);
   display: inline-block; 
-  vertical-align: top;
+  vertical-align: middle;
 }
 .slice1 {
   position: absolute;
@@ -53,7 +59,8 @@
   -o-transform:rotate(0);
   transform:rotate(0);
   display: inline-block; 
-  vertical-align: top;
+  vertical-align: middle;
+  z-index: 3;
 }
 
 .clip2 
@@ -64,7 +71,8 @@
   height:20px;
   clip:rect(0,10px,20px,0px);
   display: inline-block; 
-  vertical-align: top;
+  vertical-align: middle;
+  z-index: 4;
 }
 
 .slice2
@@ -72,4 +80,17 @@
   position: absolute;
   display: inline-block; 
   vertical-align: top;
+  width:20px;
+  height:20px;
+  clip:rect(0px,20px,20px,0px);
+  -moz-border-radius:10px;
+  -webkit-border-radius:10px; 
+  border-radius:100px;
+  -moz-transform:rotate(0);
+  -webkit-transform:rotate(0);
+  -o-transform:rotate(0);
+  transform:rotate(0);
+  background-color: #a8d0cf;
+  border-color:#a8d0cf;
+  z-index: 4;
 }
