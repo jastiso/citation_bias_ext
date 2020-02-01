@@ -29,32 +29,6 @@ function display(percent, element) {
       .insertAfter(element.parent())
 }
 
-// get the gender data from genderize.io
-const get_gender = (info, FA_given, LA_given, FA_family, LA_family) => {
-  if (FA_given != "" & LA_given != ""){
-    FA_gen = JSON.stringify(info[0].gender)
-    FA_prob = JSON.stringify(info[0].probability)
-    LA_gen = JSON.stringify(info[1].gender)
-    LA_prob = JSON.stringify(info[1].probability)
-  } else if (FA_given == "" & LA_given != ""){
-    FA_gen = ""
-    FA_prob = ""
-    LA_gen = JSON.stringify(info[0].gender)
-    LA_prob = JSON.stringify(info[0].probability)
-  } else if (FA_given == "" & LA_given != ""){
-    LA_gen = ""
-    LA_prob = ""
-    FA_gen = JSON.stringify(info[0].gender)
-    FA_prob = JSON.stringify(info[0].probability)
-  }
-
-  // display
-  $( "<p>First author:" + FA_given + " " + FA_family + " gender: " + FA_gen + " " + FA_prob
-  + "; Last author: " + LA_given + " " + LA_family + " gender: " + LA_gen + " " + LA_prob +
-   "</p>" ).insertAfter($(this).parent())
-}
-
-
 // get all papers on the page
 $(document).ready(function() {
   
@@ -113,25 +87,26 @@ $(document).ready(function() {
           LA_family = LA_family.replace('.', ' ').replace(/"/g, "")
 
           // query genderize.io
-          const gen_url = "https://api.genderize.io?name"
-          if (FA_given != "" & LA_given != "")
+          var gen_url = "https://api.genderize.io?name"
+          if (FA_given != "" & LA_given != "") {
             gen_url = gen_url + "[]=" + FA_given + "&name[]=" + LA_given
-            fetch(gen_url)
-            .then( (data) => data.json())
-            .then( (info) => get_gender(info, FA_given, LA_given, FA_family, LA_family))
-
           } else if (FA_given == "" & LA_given != ""){
            gen_url = gen_url + "=" + LA_given
           } else if (FA_given != "" & LA_given == ""){
             gen_url = gen_url + "=" + FA_given
           }
-          console.log(gen_url)
+
+          fetch(gen_url)
+          .then( (data) => data.json())
+          .then( (info) => get_gender(info, FA_given, LA_given, FA_family, LA_family))
           
-          const race_url = 'https:///v2.namsor.com/NamSorAPIv2/api2/json/'
+          var race_url = "https://api.nationalize.io?name"
+
           // first get country
-          // fetch(race_url + '/origin/' + FA_given + '/' + FA_family)
-          // .then( (data) => data.json())
-          // .then( (info) => get_country(info, FA_given, FA_family))
+          fetch(race_url + "[]=" + FA_given + "&name[]=" + LA_given)
+          .then( (data) => data.json())
+          .then( (info) => get_country(info, FA_given, LA_given, FA_family, LA_family))
+          console.log(race_url + "[]=" + FA_given + "&name[]=" + LA_given)
 
           // fetch(race_url + '/origin/' + LA_given + '/' + LA_family)
           // .then( (data) => data.json())
@@ -145,6 +120,52 @@ $(document).ready(function() {
           // fetch(race_url + '/diaspora/' + country + '/' + LA_given + '/' + LA_family)
           // .then( (data) => data.json())
           // .then( (info) => get_race(info, LA_given, LA_family)) 
+
+
+
+          // get the gender data from genderize.io
+          const get_gender = (info, FA_given, LA_given, FA_family, LA_family) => {
+            if (FA_given != "" & LA_given != ""){
+              FA_gen = JSON.stringify(info[0].gender)
+              FA_prob = JSON.stringify(info[0].probability)
+              LA_gen = JSON.stringify(info[1].gender)
+              LA_prob = JSON.stringify(info[1].probability)
+            } else if (FA_given == "" & LA_given != ""){
+              FA_gen = ""
+              FA_prob = ""
+              LA_gen = JSON.stringify(info[0].gender)
+              LA_prob = JSON.stringify(info[0].probability)
+            } else if (FA_given == "" & LA_given != ""){
+              LA_gen = ""
+              LA_prob = ""
+              FA_gen = JSON.stringify(info[0].gender)
+              FA_prob = JSON.stringify(info[0].probability)
+            } else {
+              FA_gen = ""
+              FA_prob = ""
+              LA_gen = ""
+              LA_prob = ""
+            }
+
+            // display
+            $( "<p>First author:" + FA_given + " " + FA_family + " gender: " + FA_gen + " " + FA_prob
+            + "; Last author: " + LA_given + " " + LA_family + " gender: " + LA_gen + " " + LA_prob +
+            "</p>" ).insertAfter($(this).parent())
+          }
+
+          // get the country data from namesor
+          const get_country = (info,  FA_given, LA_given, FA_family, LA_family) => {
+            FA_nat = JSON.stringify(info[0].country[0].country_id)
+            FA_prob = JSON.stringify(info[0].country[0].probability)
+            LA_nat = JSON.stringify(info[1].country[0].country_id)
+            LA_prob = JSON.stringify(info[1].country[0].probability)
+
+            // display
+            $( "<p>First author:" + FA_given + " " + FA_family + " country: " + FA_nat + " " + FA_prob
+            + "; Last author: " + LA_given + " " + LA_family + " country: " + LA_nat + " " + LA_prob +
+            "</p>" ).insertAfter($(this).parent())
+          }
+        }
       }
     } 
   }) 

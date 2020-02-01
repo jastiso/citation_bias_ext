@@ -17,7 +17,7 @@
   ],
   "browser_action": {
       "default_title": "Citation Biase",
-      "default_icon": "print_16x16.png"
+      "default_icon": "logo.PNG"
   },
   "manifest_version": 2
 }
