@@ -129,18 +129,18 @@ $(document).ready(function() {
               FA_gen = JSON.stringify(info[0].gender)
               FA_prob = JSON.stringify(info[0].probability)*100
               LA_gen = JSON.stringify(info[1].gender)
-              LA_prob = JSON.stringify(info[1].probability)
+              LA_prob = JSON.stringify(info[1].probability)*100
               // display
-              $( "<p>*First author:*" + FA_given + " " + FA_family + " *gender:* " + FA_gen + " " + FA_prob
-              + "%</p><p> *Last author:* " + LA_given + " " + LA_family + " *gender:* " + LA_gen + " " + LA_prob +
-              "%</p>" ).insertAfter($(this).parent())
+              $( "<p><b>First author:</b>" + FA_given + " " + FA_family + " <b>gender:</b> " + FA_gen + " " + FA_prob
+              + "%</p><p> <b>Last author:</b> " + LA_given + " " + LA_family + " <b>gender:</b> " + LA_gen + " " + LA_prob +
+              "%</p>" ).insertAfter($(this).parent()
             } else if (FA_given == "" & LA_given != ""){
               FA_gen = ""
               FA_prob = ""
               LA_gen = JSON.stringify(info[0].gender)
-              LA_prob = JSON.stringify(info[0].probability)
+              LA_prob = JSON.stringify(info[0].probability)*100
               // display
-              $( "<p> *Last author:* " + LA_given + " " + LA_family + " *gender:* " + LA_gen + " " + LA_prob +
+              $( "<p> <b>Last author:</b> " + LA_given + " " + LA_family + " <b>gender:</b> " + LA_gen + " " + LA_prob +
               "%</p>" ).insertAfter($(this).parent())
             } else if (FA_given == "" & LA_given != ""){
               LA_gen = ""
@@ -148,7 +148,7 @@ $(document).ready(function() {
               FA_gen = JSON.stringify(info[0].gender)
               FA_prob = JSON.stringify(info[0].probability)*100
               //display
-              $( "<p>*First author:*" + FA_given + " " + FA_family + " *gender:* " + FA_gen + " " + FA_prob
+              $( "<p><b>First author:</b>" + FA_given + " " + FA_family + " <b>gender:</b> " + FA_gen + " " + FA_prob
               + "%</p>").insertAfter($(this).parent())
             } else {
               FA_gen = ""
