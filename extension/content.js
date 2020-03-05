@@ -126,18 +126,18 @@ $(document).ready(function() {
           // get the gender data from genderize.io
           const get_gender = (info, FA_given, LA_given, FA_family, LA_family) => {
             if (FA_given != "" & LA_given != ""){
-              FA_gen = JSON.stringify(info[0].gender)
+              FA_gen = JSON.stringify(info[0].gender).replace(/"/g, "")
               FA_prob = JSON.stringify(info[0].probability)*100
-              LA_gen = JSON.stringify(info[1].gender)
+              LA_gen = JSON.stringify(info[1].gender).replace(/"/g, "")
               LA_prob = JSON.stringify(info[1].probability)*100
               // display
-              $( "<p><b>First author:</b>" + FA_given + " " + FA_family + " <b>gender:</b> " + FA_gen + " " + FA_prob
+              $( "<p><b>First author:</b> " + FA_given + " " + FA_family + " <b>gender:</b> " + FA_gen + " " + FA_prob
               + "%</p><p> <b>Last author:</b> " + LA_given + " " + LA_family + " <b>gender:</b> " + LA_gen + " " + LA_prob +
-              "%</p>" ).insertAfter($(this).parent()
+              "%</p>" ).insertAfter($(this).parent())
             } else if (FA_given == "" & LA_given != ""){
               FA_gen = ""
               FA_prob = ""
-              LA_gen = JSON.stringify(info[0].gender)
+              LA_gen = JSON.stringify(info[0].gender).replace(/"/g, "")
               LA_prob = JSON.stringify(info[0].probability)*100
               // display
               $( "<p> <b>Last author:</b> " + LA_given + " " + LA_family + " <b>gender:</b> " + LA_gen + " " + LA_prob +
@@ -145,10 +145,10 @@ $(document).ready(function() {
             } else if (FA_given == "" & LA_given != ""){
               LA_gen = ""
               LA_prob = ""
-              FA_gen = JSON.stringify(info[0].gender)
+              FA_gen = JSON.stringify(info[0].gender).replace(/"/g, "")
               FA_prob = JSON.stringify(info[0].probability)*100
               //display
-              $( "<p><b>First author:</b>" + FA_given + " " + FA_family + " <b>gender:</b> " + FA_gen + " " + FA_prob
+              $( "<p><b>First author:</b> " + FA_given + " " + FA_family + " <b>gender:</b> " + FA_gen + " " + FA_prob
               + "%</p>").insertAfter($(this).parent())
             } else {
               FA_gen = ""
