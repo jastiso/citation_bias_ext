@@ -13,11 +13,12 @@
     "persistent": false
   },
   "permissions": [
-    "activeTab"
+    "activeTab", "storage"
   ],
   "browser_action": {
-      "default_title": "Citation Biase",
-      "default_icon": "logo.PNG"
+      "default_title": "Citation Bias",
+      "default_icon": "logo.PNG",
+      "default_popup": "popup.html"
   },
   "manifest_version": 2
 }
