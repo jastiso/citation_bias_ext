@@ -9,7 +9,6 @@
     "matches": ["https://scholar.google.com/*"]
   }],
   "background": {
-    "scripts": ["background.js"],
     "persistent": false
   },
   "permissions": [
@@ -17,8 +16,11 @@
   ],
   "browser_action": {
       "default_title": "Citation Bias",
-      "default_icon": "logo.PNG",
+      "default_icon": "images/logo.PNG",
       "default_popup": "popup.html"
   },
+  "web_accessible_resources": [
+    "images/logo.png"
+  ],
   "manifest_version": 2
 }

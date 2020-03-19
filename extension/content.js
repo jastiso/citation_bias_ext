@@ -134,8 +134,8 @@ $(document).ready(function() {
                   LA_gen = JSON.stringify(info[1].gender).replace(/"/g, "")
                   LA_prob = JSON.stringify(info[1].probability)*100
                   // display
-                  $( "<p><b>First author:</b> " + FA_given + " " + FA_family + " <b>gender:</b> " + FA_gen + " " + FA_prob
-                  + "%</p><p> <b>Last author:</b> " + LA_given + " " + LA_family + " <b>gender:</b> " + LA_gen + " " + LA_prob +
+                  $( "<p class='gender'> <img class='logo' src='chrome-extension://lpbppoahccjbbephpehhppipdoabdpnk/images/logo.png' hieght=12 width=12><b> First author:</b> " + FA_given + " " + FA_family + " <b>gender:</b> " + FA_gen + " " + FA_prob
+                  + "%<br><img class='logo' src='chrome-extension://lpbppoahccjbbephpehhppipdoabdpnk/images/logo.png' hieght=12 width=12><b> Last author:</b> " + LA_given + " " + LA_family + " <b>gender:</b> " + LA_gen + " " + LA_prob +
                   "%</p>" ).insertAfter($(this).parent())
                 } else if (FA_given == "" & LA_given != ""){
                   FA_gen = ""
@@ -143,7 +143,7 @@ $(document).ready(function() {
                   LA_gen = JSON.stringify(info[0].gender).replace(/"/g, "")
                   LA_prob = JSON.stringify(info[0].probability)*100
                   // display
-                  $( "<p> <b>Last author:</b> " + LA_given + " " + LA_family + " <b>gender:</b> " + LA_gen + " " + LA_prob +
+                  $( "<p class='gender'> <img src='chrome-extension://lpbppoahccjbbephpehhppipdoabdpnk/images/logo.png' height=16 width=16><b> Last author:</b> " + LA_given + " " + LA_family + " <b>gender:</b> " + LA_gen + " " + LA_prob +
                   "%</p>" ).insertAfter($(this).parent())
                 } else if (FA_given == "" & LA_given != ""){
                   LA_gen = ""
@@ -151,7 +151,7 @@ $(document).ready(function() {
                   FA_gen = JSON.stringify(info[0].gender).replace(/"/g, "")
                   FA_prob = JSON.stringify(info[0].probability)*100
                   //display
-                  $( "<p><b>First author:</b> " + FA_given + " " + FA_family + " <b>gender:</b> " + FA_gen + " " + FA_prob
+                  $( "<p class='gender'> <img src='chrome-extension://lpbppoahccjbbephpehhppipdoabdpnk/images/logo.png' hieght=16 width=16><b> First author:</b> " + FA_given + " " + FA_family + " <b>gender:</b> " + FA_gen + " " + FA_prob
                   + "%</p>").insertAfter($(this).parent())
                 } else {
                   FA_gen = ""

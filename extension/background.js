@@ -1,1 +1,0 @@
-var isExtensionOn = true;  //this will be changed by popup.js directly.

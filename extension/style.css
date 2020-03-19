@@ -1,3 +1,18 @@
+p.gender {
+  line-height: 1;
+}
+
+.logo {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* trying to get local image paths working, but I dont think this worked*/
+.selector {
+  background: url('chrome-extension://__MSG_@@extension_id__/images/logo.png');
+}
+
 .box{
   position:static;
   top:0;
