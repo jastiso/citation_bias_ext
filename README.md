@@ -5,10 +5,10 @@ Motivated from work by J. D. Dworkin, K. A. Linn, E. G. Teich, P. Zurn, R. T. Sh
 
 ## Instructions
 This project is currently in the beta stage, and therefore is not yet available on the Chrome Extension store. To use it, you must add it in "developer mode".
-1. Download this GitHub repository (click the green "clone or download button" followed by "Download as zip")
+1. Download this GitHub repository (click the green "clone or download button" followed by "Download as zip"). Unzip the folder.
 2. Open the Extension Management page by navigating to chrome://extensions.
 3. Enable Developer Mode by clicking the toggle switch in the top right corner next to Developer mode.
-4. Click the LOAD UNPACKED button and select the extension directory (this should be the unzipped folder that you just downloaded called "citation_bias_ext").
+4. Click the LOAD UNPACKED button and select the "extension" directory under "citation_bias_ext" (inside the unzipped folder that you just downloaded called "citation_bias_ext").
 5. You're done! You should now see a new, colorful Google Scholar icon on your chrome browser. You can click this icon to toggle the extension on and off.
 
 ## Caveats
