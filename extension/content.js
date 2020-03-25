@@ -89,6 +89,7 @@ $(document).ready(function() {
                 if (info.message.items[cnt].hasOwnProperty('author')){
                   var FA_given = JSON.stringify(info.message.items[cnt].author[0].given)
                   var FA_family = JSON.stringify(info.message.items[cnt].author[0].family)
+
                   if (info.message.items[cnt].author.length > 1){
                     var LA_given = JSON.stringify(info.message.items[cnt].author[info.message.items[cnt].author.length-1].given)
                     var LA_family = JSON.stringify(info.message.items[cnt].author[info.message.items[cnt].author.length-1].family)
@@ -102,7 +103,6 @@ $(document).ready(function() {
                   var LA_given = ""
                   var LA_family = ""
                 }
-
                 // clean up names
                 FA_given = FA_given.replace('.', ' ').replace(/"/g, "").split(' ')[0]
                 LA_given = LA_given.replace('.', ' ').replace(/"/g, "").split(' ')[0]
@@ -131,11 +131,12 @@ $(document).ready(function() {
                 gen_url = gen_url + "=" + FA_given
               }
               if (gen_url != "https://api.genderize.io?name"){
+                console.log("querying gender api...")
                 fetch(gen_url)
                 .then( (data) => data.json())
                 .then( (info) => get_gender(info, FA_given, LA_given, FA_family, LA_family))
               }
-              
+
               var race_url = "https://api.nationalize.io?name"
 
               // first get country
@@ -162,6 +163,7 @@ $(document).ready(function() {
               // get the gender data from genderize.io
               const get_gender = (info, FA_given, LA_given, FA_family, LA_family) => {
                 if (FA_given != "" & LA_given != ""){
+                  console.log('Both authors found')
                   FA_gen = JSON.stringify(info[0].gender).replace(/"/g, "")
                   FA_prob = JSON.stringify(info[0].probability)*100
                   LA_gen = JSON.stringify(info[1].gender).replace(/"/g, "")
@@ -171,22 +173,25 @@ $(document).ready(function() {
                   + "%<br><img class='logo' src=" + imgURL + " hieght=12 width=12><b> Last author:</b> " + LA_given + " " + LA_family + " <b>gender:</b> " + LA_gen + " " + LA_prob +
                   "%</p>" ).insertAfter($(this).parent())
                 } else if (FA_given == "" & LA_given != ""){
+                  console.log("Last author found")
                   FA_gen = ""
                   FA_prob = ""
-                  LA_gen = JSON.stringify(info[0].gender).replace(/"/g, "")
-                  LA_prob = JSON.stringify(info[0].probability)*100
+                  LA_gen = JSON.stringify(info.gender).replace(/"/g, "")
+                  LA_prob = JSON.stringify(info.probability)*100
                   // display
                   $( "<p class='gender'> <img src=" + imgURL + " height=16 width=16><b> Last author:</b> " + LA_given + " " + LA_family + " <b>gender:</b> " + LA_gen + " " + LA_prob +
                   "%</p>" ).insertAfter($(this).parent())
-                } else if (FA_given == "" & LA_given != ""){
+                } else if (FA_given != "" & LA_given == ""){
+                  console.log("First author found")
                   LA_gen = ""
                   LA_prob = ""
-                  FA_gen = JSON.stringify(info[0].gender).replace(/"/g, "")
-                  FA_prob = JSON.stringify(info[0].probability)*100
+                  FA_gen = JSON.stringify(info.gender).replace(/"/g, "")
+                  FA_prob = JSON.stringify(info.probability)*100
                   //display
                   $( "<p class='gender'> <img src=" + imgURL + " hieght=16 width=16><b> First author:</b> " + FA_given + " " + FA_family + " <b>gender:</b> " + FA_gen + " " + FA_prob
                   + "%</p>").insertAfter($(this).parent())
                 } else {
+                  console.log("No authors found")
                   FA_gen = ""
                   FA_prob = ""
                   LA_gen = ""
