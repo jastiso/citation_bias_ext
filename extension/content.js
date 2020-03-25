@@ -3,6 +3,20 @@ const max_res = 100
 const imgURL = chrome.extension.getURL("images/logo.png");
 
 // functions
+function checkMiddleName(name) {
+  if (name.length == 0){
+    given = ""
+  } else if (name.length > 1){ 
+    if (name[0].length == 1 & name[1].length > 1){
+      given = name[1]
+    } else {
+      given = name[0]
+    }
+  } else {
+    given = name[0]
+  }
+  return given
+}
 function rotate(element, degree) {
   element.css({
       '-webkit-transform': 'rotate(' + degree + 'deg)',
@@ -104,8 +118,14 @@ $(document).ready(function() {
                   var LA_family = ""
                 }
                 // clean up names
-                FA_given = FA_given.replace('.', ' ').replace(/"/g, "").split(' ')[0]
-                LA_given = LA_given.replace('.', ' ').replace(/"/g, "").split(' ')[0]
+                FA_given = FA_given.replace('.', ' ').replace(/"/g, "").split(' ')
+                FA_given = FA_given.filter(function(n) { return n != ""; });
+                LA_given = LA_given.replace('.', ' ').replace(/"/g, "").split(' ')
+                LA_given = LA_given.filter(function(n) { return n != ""; });
+                // check for middle names
+                FA_given = checkMiddleName(FA_given)
+                LA_given = checkMiddleName(LA_given)
+                // remove initials
                 if (FA_given.length == 1){
                   FA_given = ""
                 }
