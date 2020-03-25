@@ -58,15 +58,18 @@ $(document).ready(function() {
           // get the names from crossref
           const get_names = (info) => {
             if (info.status == "ok"){
+              console.log(info)
               // drop F1000 reviews, and check if correct match wasnt first result
-              var title = info.message.items[0].title[0].split('.').join("")
+              var title = info.message.items[0].title[0].replace('.',"").replace('</title>',"").replace('<title>',"")
               var cnt = 1
               console.log(title.toLowerCase())
               console.log($(this).text().toLowerCase().split('.').join(""))
               while (cnt < info.message.items.length & ((title.includes('Faculty of 1000') | !(title.toLowerCase().includes($(this).text().toLowerCase().split('.').join("")))))){
                 console.log("Correct title not first entry")
-                title = info.message.items[cnt].title[0]
-                cnt = cnt + 1
+                if (info.message.items[cnt].length != 0){
+                  title = info.message.items[cnt].title[0]
+                  cnt = cnt + 1
+                }
               }
 
               // get relevant names
