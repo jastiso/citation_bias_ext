@@ -65,7 +65,7 @@ $(document).ready(function() {
               var title = info.message.items[0].title[0].replace('.',"").replace('</title>',"").replace('<title>',"")
               var cnt = 1
               
-              while (cnt < info.message.items.length & cnt < max_res & ((title.includes('Faculty of 1000') | !(title.toLowerCase().includes($(this).text().toLowerCase().split('.').join("")))))){
+              while (cnt < info.message.items.length & cnt < max_res & ((title.includes('Faculty of 1000') | !(title.toLowerCase().includes($(this).text().toLowerCase().replace('.',"")))))){
                 console.log("Correct title not first entry")
                 if (info.message.items[cnt].length != 0){
                   if (info.message.items[cnt].hasOwnProperty('title')){
@@ -74,11 +74,13 @@ $(document).ready(function() {
                 }
                 cnt = cnt + 1
               }
+              console.log(title)
               //check if we found a match
               var match = 1
               if (cnt == info.message.items.length | cnt == max_res){
                  match = 0
               }
+              cnt = cnt - 1
 
               if (match == 1){
                 // get relevant names
@@ -103,12 +105,13 @@ $(document).ready(function() {
                 }
                 FA_family = FA_family.replace('.', ' ').replace(/"/g, "")
                 LA_family = LA_family.replace('.', ' ').replace(/"/g, "")
-              } else {
+                } else {
                 var LA_given = ""
                 var LA_family = ""
                 var FA_given = ""
                 var FA_family = ""
               }
+
               // query genderize.io
               var gen_url = "https://api.genderize.io?name"
               if (FA_given != "" & LA_given != "") {
@@ -118,10 +121,11 @@ $(document).ready(function() {
               } else if (FA_given != "" & LA_given == ""){
                 gen_url = gen_url + "=" + FA_given
               }
-
-              fetch(gen_url)
-              .then( (data) => data.json())
-              .then( (info) => get_gender(info, FA_given, LA_given, FA_family, LA_family))
+              if (gen_url != "https://api.genderize.io?name"){
+                fetch(gen_url)
+                .then( (data) => data.json())
+                .then( (info) => get_gender(info, FA_given, LA_given, FA_family, LA_family))
+              }
               
               var race_url = "https://api.nationalize.io?name"
 
