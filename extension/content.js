@@ -1,3 +1,6 @@
+// variables
+const max_res = 20
+
 // functions
 function rotate(element, degree) {
   element.css({
@@ -62,16 +65,18 @@ $(document).ready(function() {
               var title = info.message.items[0].title[0].replace('.',"").replace('</title>',"").replace('<title>',"")
               var cnt = 1
               
-              while (cnt < info.message.items.length & ((title.includes('Faculty of 1000') | !(title.toLowerCase().includes($(this).text().toLowerCase().split('.').join("")))))){
+              while (cnt < info.message.items.length & cnt < max_res & ((title.includes('Faculty of 1000') | !(title.toLowerCase().includes($(this).text().toLowerCase().split('.').join("")))))){
                 console.log("Correct title not first entry")
                 if (info.message.items[cnt].length != 0){
-                  title = info.message.items[cnt].title[0]
-                  cnt = cnt + 1
+                  if (info.message.items[cnt].hasOwnProperty('title')){
+                    title = info.message.items[cnt].title[0]
+                  }
                 }
+                cnt = cnt + 1
               }
               //check if we found a match
               var match = 1
-              if (cnt == info.message.items.length){
+              if (cnt == info.message.items.length | cnt == max_res){
                  match = 0
               }
 
