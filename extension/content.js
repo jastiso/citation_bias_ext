@@ -86,12 +86,19 @@ $(document).ready(function() {
 
               if (match == 1){
                 // get relevant names
-                var FA_given = JSON.stringify(info.message.items[cnt].author[0].given)
-                var FA_family = JSON.stringify(info.message.items[cnt].author[0].family)
-                if (info.message.items[cnt].author.length > 1){
-                  var LA_given = JSON.stringify(info.message.items[cnt].author[info.message.items[cnt].author.length-1].given)
-                  var LA_family = JSON.stringify(info.message.items[cnt].author[info.message.items[cnt].author.length-1].family)
+                if (info.message.items[cnt].hasOwnProperty('author')){
+                  var FA_given = JSON.stringify(info.message.items[cnt].author[0].given)
+                  var FA_family = JSON.stringify(info.message.items[cnt].author[0].family)
+                  if (info.message.items[cnt].author.length > 1){
+                    var LA_given = JSON.stringify(info.message.items[cnt].author[info.message.items[cnt].author.length-1].given)
+                    var LA_family = JSON.stringify(info.message.items[cnt].author[info.message.items[cnt].author.length-1].family)
+                  } else {
+                    var LA_given = ""
+                    var LA_family = ""
+                  }
                 } else {
+                  var FA_given = ""
+                  var FA_family = ""
                   var LA_given = ""
                   var LA_family = ""
                 }
