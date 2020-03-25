@@ -59,11 +59,14 @@ $(document).ready(function() {
           const get_names = (info) => {
             if (info.status == "ok"){
               // drop F1000 reviews, and check if correct match wasnt first result
-              var title = info.message.items[0].title[0]
-              var cnt = 0
-              while (title.includes('Faculty of 1000') | !(title.toLowerCase().includes($(this).text().toLowerCase().split('.').join("")))){
-                cnt = cnt + 1
+              var title = info.message.items[0].title[0].split('.').join("")
+              var cnt = 1
+              console.log(title.toLowerCase())
+              console.log($(this).text().toLowerCase().split('.').join(""))
+              while (cnt < info.message.items.length & ((title.includes('Faculty of 1000') | !(title.toLowerCase().includes($(this).text().toLowerCase().split('.').join("")))))){
+                console.log("Correct title not first entry")
                 title = info.message.items[cnt].title[0]
+                cnt = cnt + 1
               }
 
               // get relevant names
