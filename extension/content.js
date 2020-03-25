@@ -118,9 +118,9 @@ $(document).ready(function() {
                   var LA_family = ""
                 }
                 // clean up names
-                FA_given = FA_given.replace('.', ' ').replace(/"/g, "").split(' ')
+                FA_given = FA_given.replace(/\./g, ' ').replace(/"/g, "").split(' ')
                 FA_given = FA_given.filter(function(n) { return n != ""; });
-                LA_given = LA_given.replace('.', ' ').replace(/"/g, "").split(' ')
+                LA_given = LA_given.replace(/\./g, ' ').replace(/"/g, "").split(' ')
                 LA_given = LA_given.filter(function(n) { return n != ""; });
                 // check for middle names
                 FA_given = checkMiddleName(FA_given)
@@ -132,8 +132,8 @@ $(document).ready(function() {
                 if (LA_given.length == 1){
                   LA_given = ""
                 }
-                FA_family = FA_family.replace('.', ' ').replace(/"/g, "")
-                LA_family = LA_family.replace('.', ' ').replace(/"/g, "")
+                FA_family = FA_family.replace(/\./g, ' ').replace(/"/g, "")
+                LA_family = LA_family.replace(/\./g, ' ').replace(/"/g, "")
                 } else {
                 var LA_given = ""
                 var LA_family = ""
