@@ -1,5 +1,5 @@
 // variables
-const max_res = 20
+const max_res = 100
 const imgURL = chrome.extension.getURL("images/logo.png");
 
 // functions
@@ -75,7 +75,7 @@ $(document).ready(function() {
                 }
                 cnt = cnt + 1
               }
-
+              console.log(title)
               //check if we found a match
               var match = 1
               if (cnt == info.message.items.length | cnt == max_res){
