@@ -59,7 +59,7 @@ $(document).ready(function() {
       } else {
         var item_tag = '.title'
       }
-      console.log(item_tag)
+
       $(item_tag).children().each(function(){
 
         // get url-encoded title
