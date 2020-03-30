@@ -53,16 +53,21 @@ $(document).ready(function() {
   // $(".gs_ab_md").append( '<div class="wrapper" data-anim="base wrapper"><div class="circle" data-anim="base left"></div><div class="circle" data-anim="base right"></div></div>' )
   chrome.storage.local.get('enabled', data => {
     if (data.enabled) { 
-  
-
-      $(".gs_rt").children().each(function(){
+      var curr_page = window.location.href
+      if (curr_page.includes('scholar.google')){
+        var item_tag = ".gs_rt"
+      } else {
+        var item_tag = '.title'
+      }
+      console.log(item_tag)
+      $(item_tag).children().each(function(){
 
         // get url-encoded title
         var title = "title:'"+$(this).text()+"'"
         uri = encodeURI(title)
         api_req = 'https://api.crossref.org/works?query=' + uri + '&select=title,author&sort=score&order=desc'
 
-        // check that isnt a [BOOK] or [CITATION] tag
+        // check that isnt a [BOOK] or [CITATION] tag for google scholar
         if (!($(this).hasClass('gs_ctc') || $(this).hasClass('gs_ctu'))){
 
           fetch(api_req)
