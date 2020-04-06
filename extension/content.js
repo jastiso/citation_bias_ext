@@ -145,7 +145,10 @@ $(document).ready(function() {
                 var FA_given = ""
                 var FA_family = ""
               }
-
+              //replace special characters
+              FA_given = FA_given.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+              LA_given = LA_given.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+              console.log(FA_given)
               // query genderize.io
               var gen_url = "https://api.genderize.io?name"
               if (FA_given != "" & LA_given != "") {
