@@ -94,17 +94,18 @@ $(document).ready(function() {
               var corr_flag = info.message.items[0].title[0].replace('</title>',"").replace('<title>',"").slice(0, 11) == 'Correction:'
               // clean up
               title = cleanString(title)
+              title = title.replace('supplemental material for ', '')
               console.log(title)
               var cnt = 1
-              console.log(corr_flag)
               // clean up the current item
               var item_name = cleanString($(this).text())
 
-              while (cnt < info.message.items.length & cnt < max_res & (title.includes('faculty of 1000') | corr_flag | !(title.includes(item_name)))){
+              while (cnt < info.message.items.length & cnt < max_res & (title.includes('faculty of 1000') | title.includes('f1000') | corr_flag | !(title.includes(item_name)))){
                 console.log("Correct title not first entry")
                 if (info.message.items[cnt].length != 0){
                   if (info.message.items[cnt].hasOwnProperty('title')){
                     title = cleanString(info.message.items[cnt].title[0])
+                    title = title.replace('supplemental material for ', '')
                     corr_flag = info.message.items[cnt].title[0].slice(0, 11) == 'Correction:'
                   }
                 }
@@ -149,11 +150,9 @@ $(document).ready(function() {
                 // remove initials
                 if (FA_given.length == 1){
                   FA_given = ""
-                  console.log("Unable to find first author")
                 }
                 if (LA_given.length == 1){
                   LA_given = ""
-                  console.log("Unable to find last author")
                 }
                 FA_family = FA_family.replace(/\./g, ' ').replace(/"/g, "")
                 LA_family = LA_family.replace(/\./g, ' ').replace(/"/g, "")

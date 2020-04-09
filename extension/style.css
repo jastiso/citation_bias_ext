@@ -15,7 +15,7 @@ p.gender {
 
 .box{
   position:static;
-  top:0;
+  top:0; 
   left:0;
   width:20px;
   height:20px;
