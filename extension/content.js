@@ -82,11 +82,11 @@ $(document).ready(function() {
           const get_names = (info) => {
             if (info.status == "ok"){
               // drop F1000 reviews, Corrections, and check if correct match wasnt first result
-              var title = info.message.items[0].title[0].replace('.',"").replace('</title>',"").replace('<title>',"")
+              var title = info.message.items[0].title[0].replace('.',"").replace('</title>',"").replace('<title>',"").replace('?',"")
               console.log(title)
               var cnt = 1
 
-              while (cnt < info.message.items.length & cnt < max_res & ((title.includes('Faculty of 1000') | (title.includes('Correction:')) | !(title.toLowerCase().includes($(this).text().toLowerCase().replace('.',"")))))){
+              while (cnt < info.message.items.length & cnt < max_res & ((title.includes('Faculty of 1000') | (title.includes('Correction:')) | !(title.toLowerCase().includes($(this).text().toLowerCase().replace('.',"").replace('?',"")))))){
                 console.log("Correct title not first entry")
                 if (info.message.items[cnt].length != 0){
                   if (info.message.items[cnt].hasOwnProperty('title')){
