@@ -17,6 +17,13 @@ function checkMiddleName(name) {
   }
   return given
 }
+
+function cleanString(string) {
+  string = string.replace(/[!":#$%&'()*+,-./;<=>?@[\]^_`{|}~]/g,"")
+  string = string.replace(/[^\x00-\x7F]/g, "")
+  return string.toLowerCase()
+}
+
 function rotate(element, degree) {
   element.css({
       '-webkit-transform': 'rotate(' + degree + 'deg)',
@@ -82,15 +89,23 @@ $(document).ready(function() {
           const get_names = (info) => {
             if (info.status == "ok"){
               // drop F1000 reviews, Corrections, and check if correct match wasnt first result
-              var title = info.message.items[0].title[0].replace('.',"").replace('</title>',"").replace('<title>',"").replace('?',"")
+              var title = info.message.items[0].title[0].replace('</title>',"").replace('<title>',"")
+              // check if item is a correction
+              var corr_flag = info.message.items[0].title[0].replace('</title>',"").replace('<title>',"").slice(0, 11) == 'Correction:'
+              // clean up
+              title = cleanString(title)
               console.log(title)
               var cnt = 1
+              console.log(corr_flag)
+              // clean up the current item
+              var item_name = cleanString($(this).text())
 
-              while (cnt < info.message.items.length & cnt < max_res & ((title.includes('Faculty of 1000') | (title.includes('Correction:')) | !(title.toLowerCase().includes($(this).text().toLowerCase().replace('.',"").replace('?',"")))))){
+              while (cnt < info.message.items.length & cnt < max_res & (title.includes('faculty of 1000') | corr_flag | !(title.includes(item_name)))){
                 console.log("Correct title not first entry")
                 if (info.message.items[cnt].length != 0){
                   if (info.message.items[cnt].hasOwnProperty('title')){
-                    title = info.message.items[cnt].title[0]
+                    title = cleanString(info.message.items[cnt].title[0])
+                    corr_flag = info.message.items[cnt].title[0].slice(0, 11) == 'Correction:'
                   }
                 }
                 cnt = cnt + 1
@@ -138,7 +153,7 @@ $(document).ready(function() {
                 }
                 if (LA_given.length == 1){
                   LA_given = ""
-                  console.log("unable to find last author")
+                  console.log("Unable to find last author")
                 }
                 FA_family = FA_family.replace(/\./g, ' ').replace(/"/g, "")
                 LA_family = LA_family.replace(/\./g, ' ').replace(/"/g, "")
@@ -162,7 +177,6 @@ $(document).ready(function() {
                 gen_url = gen_url + "=" + FA_given
               }
               if (gen_url != "https://api.genderize.io?name"){
-                console.log("querying gender api...")
                 fetch(gen_url)
                 .then( (data) => data.json())
                 .then( (info) => get_gender(info, FA_given, LA_given, FA_family, LA_family))
