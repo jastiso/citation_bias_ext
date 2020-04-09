@@ -66,7 +66,7 @@ $(document).ready(function() {
         var title = "title:'"+$(this).text()+"'"
         uri = encodeURI(title)
         api_req = 'https://api.crossref.org/works?query=' + uri + '&select=title,author&sort=score&order=desc'
-
+        console.log(api_req)
         // check that isnt a [BOOK] or [CITATION] tag for google scholar
         if (!($(this).hasClass('gs_ctc') || $(this).hasClass('gs_ctu'))){
 
@@ -81,11 +81,12 @@ $(document).ready(function() {
           // get the names from crossref
           const get_names = (info) => {
             if (info.status == "ok"){
-              // drop F1000 reviews, and check if correct match wasnt first result
+              // drop F1000 reviews, Corrections, and check if correct match wasnt first result
               var title = info.message.items[0].title[0].replace('.',"").replace('</title>',"").replace('<title>',"")
+              console.log(title)
               var cnt = 1
-              
-              while (cnt < info.message.items.length & cnt < max_res & ((title.includes('Faculty of 1000') | !(title.toLowerCase().includes($(this).text().toLowerCase().replace('.',"")))))){
+
+              while (cnt < info.message.items.length & cnt < max_res & ((title.includes('Faculty of 1000') | (title.includes('Correction:')) | !(title.toLowerCase().includes($(this).text().toLowerCase().replace('.',"")))))){
                 console.log("Correct title not first entry")
                 if (info.message.items[cnt].length != 0){
                   if (info.message.items[cnt].hasOwnProperty('title')){
@@ -94,7 +95,7 @@ $(document).ready(function() {
                 }
                 cnt = cnt + 1
               }
-              console.log(title)
+
               //check if we found a match
               var match = 1
               if (cnt == info.message.items.length | cnt == max_res){
@@ -133,9 +134,11 @@ $(document).ready(function() {
                 // remove initials
                 if (FA_given.length == 1){
                   FA_given = ""
+                  console.log("Unable to find first author")
                 }
                 if (LA_given.length == 1){
                   LA_given = ""
+                  console.log("unable to find last author")
                 }
                 FA_family = FA_family.replace(/\./g, ' ').replace(/"/g, "")
                 LA_family = LA_family.replace(/\./g, ' ').replace(/"/g, "")
@@ -148,7 +151,7 @@ $(document).ready(function() {
               //replace special characters
               FA_given = FA_given.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
               LA_given = LA_given.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-              console.log(FA_given)
+
               // query genderize.io
               var gen_url = "https://api.genderize.io?name"
               if (FA_given != "" & LA_given != "") {
