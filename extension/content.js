@@ -142,9 +142,13 @@ $(document).ready(function() {
                   var FA_given = JSON.stringify(info.message.items[cnt].author[0].given)
                   var FA_family = JSON.stringify(info.message.items[cnt].author[0].family)
 
-                  if (info.message.items[cnt].author.length > 1){
+                  // avoid group affiliations at the end of author lists
+                  if (info.message.items[cnt].author.length > 1 & info.message.items[cnt].author[info.message.items[cnt].author.length-1].hasOwnProperty('name')){
+                    var LA_given = JSON.stringify(info.message.items[cnt].author[info.message.items[cnt].author.length-2].given)
+                    var LA_family = JSON.stringify(info.message.items[cnt].author[info.message.items[cnt].author.length-2].family)
+                  } else if (info.message.items[cnt].author.length) {
                     var LA_given = JSON.stringify(info.message.items[cnt].author[info.message.items[cnt].author.length-1].given)
-                    var LA_family = JSON.stringify(info.message.items[cnt].author[info.message.items[cnt].author.length-1].family)
+                    var LA_family = JSON.stringify(info.message.items[cnt].author[info.message.items[cnt].author.length-1].family)               
                   } else {
                     var LA_given = ""
                     var LA_family = ""
@@ -155,6 +159,7 @@ $(document).ready(function() {
                   var LA_given = ""
                   var LA_family = ""
                 }
+
                 // clean up names
                 FA_given = FA_given.replace(/\./g, ' ').replace(/"/g, "").split(' ')
                 FA_given = FA_given.filter(function(n) { return n != ""; });
