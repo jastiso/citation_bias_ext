@@ -1,6 +1,7 @@
 // variables
-const max_res = 100
+const max_res = 100;
 const imgURL = chrome.extension.getURL("images/logo.png");
+const currentYear = (new Date).getFullYear();
 
 // functions
 function checkMiddleName(name) {
@@ -69,11 +70,26 @@ $(document).ready(function() {
 
       $(item_tag).children().each(function(){
 
+        // get date
+        if (curr_page.includes('scholar.google')){
+          var date = $(this).parent().siblings(".gs_a").text()
+          date = date.split(' - ')[0]
+          date = date.slice(date.length - 4)
+        } else {
+        }
+
         // get url-encoded title
         var title = "title:'"+$(this).text()+"'"
         uri = encodeURI(title)
-        api_req = 'https://api.crossref.org/works?query=' + uri + '&select=title,author&sort=score&order=desc'
-        console.log(api_req)
+        // check if date is reasonable
+        if ($.isNumeric(date) & date > 1600 & date < currentYear ) {
+          api_req = 'https://api.crossref.org/works?filter=from-pub-date:' + parseInt(date) + ',until-pub-date:' + parseInt(date) + '&query=' + uri + '&select=title,author,published-online&sort=score&order=desc'
+        } else {
+          api_req = 'https://api.crossref.org/works?query=' + uri + '&select=title,author&sort=score&order=desc'
+        }
+        
+        //console.log(api_req) // helpful for debugging
+        
         // check that isnt a [BOOK] or [CITATION] tag for google scholar
         if (!($(this).hasClass('gs_ctc') || $(this).hasClass('gs_ctu'))){
 
@@ -100,7 +116,7 @@ $(document).ready(function() {
               // clean up the current item
               var item_name = cleanString($(this).text())
 
-              while (cnt < info.message.items.length & cnt < max_res & (title.includes('faculty of 1000') | title.includes('f1000') | corr_flag | !(title.includes(item_name)))){
+              while (cnt < info.message.items.length & cnt < max_res & (title.includes('faculty of 1000') | title.includes('f1000') | corr_flag | !(title.includes(item_name) | item_name.includes(title)))){
                 console.log("Correct title not first entry")
                 if (info.message.items[cnt].length != 0){
                   if (info.message.items[cnt].hasOwnProperty('title')){
