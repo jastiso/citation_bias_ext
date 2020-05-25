@@ -11,7 +11,7 @@ This project is currently in the beta stage, and therefore is not yet available 
 2. Open the Extension Management page by navigating to chrome://extensions.
 3. Enable Developer Mode by clicking the toggle switch in the top right corner next to Developer mode.
 4. Click the LOAD UNPACKED button and select the "extension" directory under "citation_bias_ext" (inside the unzipped folder that you just downloaded called "citation_bias_ext").
-5. You're done! You should now see a new, colorful Google Scholar icon on your chrome browser. You can click this icon to toggle the extension on and off.
+5. You should now see a new, colorful Google Scholar icon on your chrome browser. Click this icon to be sure that the extension is enabled.
 
 ## Caveats
 1. Typically, *gender* is thought of as a self-identity that individual expressed behaviorally. Since our extension uses only first names, we have limited ability to actually capture this definition of gender. It is more accurate to think of the probabilities displayed for gender as *perceived gender*, rather than an estimate of gender identity. Additionally, this extension only shows probabilities for *male* or *female* genders, and incorrectly assumes that all people fall into that binary. 
