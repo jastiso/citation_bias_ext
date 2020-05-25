@@ -65,7 +65,7 @@ $(document).ready(function() {
       if (curr_page.includes('scholar.google')){
         var item_tag = ".gs_rt"
       } else {
-        var item_tag = '.title'
+        var item_tag = '.labs-docsum-title'
       }
 
       $(item_tag).children().each(function(){
