@@ -65,7 +65,7 @@ $(document).ready(function() {
       if (curr_page.includes('scholar.google')){
         var item_tag = ".gs_rt"
       } else {
-        var item_tag = '.labs-docsum-title'
+        var item_tag = '.docsum-content'
       }
 
       $(item_tag).children().each(function(){
@@ -89,9 +89,9 @@ $(document).ready(function() {
         }
         
         //console.log(api_req) // helpful for debugging
-        
+
         // check that isnt a [BOOK] or [CITATION] tag for google scholar
-        if (!($(this).hasClass('gs_ctc') || $(this).hasClass('gs_ctu'))){
+        if ((curr_page.includes('scholar.google') && !($(this).hasClass('gs_ctc') || $(this).hasClass('gs_ctu'))) || (curr_page.includes('pubmed') && $(this).hasClass('labs-docsum-title') )){
 
           fetch(api_req)
           .then( (data) => data.json())
