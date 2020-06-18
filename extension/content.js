@@ -135,7 +135,7 @@ $(document).ready(function() {
                 // clean up the current item
                 var item_name = cleanString($(this).text())
 
-                while (cnt < info.message.items.length & cnt < max_res & (title.includes('faculty of 1000') | title.includes('f1000') | corr_flag | !(title.includes(item_name) | item_name.includes(title)))){
+                while (cnt < info.message.items.length & cnt < max_res & (title.includes('faculty of 1000') | title.includes('f1000') | corr_flag | !(item_name.includes(title)))){
                   console.log("Correct title not first entry")
                   if (info.message.items[cnt].length != 0){
                     if (info.message.items[cnt].hasOwnProperty('title')){
