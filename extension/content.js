@@ -90,8 +90,12 @@ $(document).ready(function() {
         
         //console.log(api_req) // helpful for debugging
 
-        // check that isnt a [BOOK] or [CITATION] tag for google scholar
-        if ((curr_page.includes('scholar.google') && !($(this).hasClass('gs_ctc') || $(this).hasClass('gs_ctu'))) || (curr_page.includes('pubmed') && $(this).hasClass('labs-docsum-title') )){
+        // check that isnt a [BOOK] or [CITATION] tag for google scholar, and that this is the 'title' portion of pubmed
+        // also checkts that this is not a gs profile results
+        var gs_okay = (curr_page.includes('scholar.google') && !($(this).hasClass('gs_ctc') || $(this).hasClass('gs_ctu')))
+        var pm_ok = (curr_page.includes('pubmed') && $(this).hasClass('labs-docsum-title') )
+        var gs_prof = curr_page.includes('scholar.google') && !($(this).attr('id'))
+        if ((gs_okay || pm_ok) && !gs_prof){
 
           fetch(api_req)
           .then( (data) => data.json())
