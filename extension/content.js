@@ -75,19 +75,29 @@ $(document).ready(function() {
           var date = $(this).parent().siblings(".gs_a").text()
           date = date.split(' - ')[0]
           date = date.slice(date.length - 4)
-        } else {
+        } else { // get DOI for pubmed
+          var doi = $(this).siblings(".labs-docsum-citation, .full-citation").children(".labs-docsum-journal-citation, .full-journal-citation").text()
+          doi = doi.split('doi: ')[1]
+          if (doi){
+            doi = doi.split(' ')[0]
+            if (doi.endsWith('.')){
+              doi = doi.slice(0,-1)
+            }
+          } 
         }
-
+        
         // get url-encoded title
         var title = "title:'"+$(this).text()+"'"
         uri = encodeURI(title)
+        
         // check if date is reasonable
-        if ($.isNumeric(date) & date > 1600 & date < currentYear ) {
+        if (doi) {
+          api_req = 'https://api.crossref.org/works?filter=doi:' + encodeURI(doi) + '&query=' + uri + '&select=title,author,published-online&sort=score&order=desc'
+        } else if ($.isNumeric(date) & date > 1600 & date < currentYear ) {
           api_req = 'https://api.crossref.org/works?filter=from-pub-date:' + parseInt(date) + ',until-pub-date:' + parseInt(date) + '&query=' + uri + '&select=title,author,published-online&sort=score&order=desc'
         } else {
           api_req = 'https://api.crossref.org/works?query=' + uri + '&select=title,author&sort=score&order=desc'
         }
-        
         //console.log(api_req) // helpful for debugging
 
         // check that isnt a [BOOK] or [CITATION] tag for google scholar, and that this is the 'title' portion of pubmed
@@ -108,40 +118,46 @@ $(document).ready(function() {
           // get the names from crossref
           const get_names = (info) => {
             if (info.status == "ok"){
-              // drop F1000 reviews, Corrections, and check if correct match wasnt first result
-              var title = info.message.items[0].title[0].replace('</title>',"").replace('<title>',"")
-              // check if item is a correction
-              var corr_flag = info.message.items[0].title[0].replace('</title>',"").replace('<title>',"").slice(0, 11) == 'Correction:'
-              // clean up
-              title = cleanString(title)
-              title = title.replace('supplemental material for ', '')
-              console.log(title)
-              var cnt = 1
-              // clean up the current item
-              var item_name = cleanString($(this).text())
+              if (doi){
+                var match = 1
+                console.log('Used DOI')
+                var cnt = 0
+              } else {
+                // drop F1000 reviews, Corrections, and check if correct match wasnt first result
+                var title = info.message.items[0].title[0].replace('</title>',"").replace('<title>',"")
+                // check if item is a correction
+                var corr_flag = info.message.items[0].title[0].replace('</title>',"").replace('<title>',"").slice(0, 11) == 'Correction:'
+                // clean up
+                title = cleanString(title)
+                title = title.replace('supplemental material for ', '')
+                console.log(title)
+                var cnt = 1
+                // clean up the current item
+                var item_name = cleanString($(this).text())
 
-              while (cnt < info.message.items.length & cnt < max_res & (title.includes('faculty of 1000') | title.includes('f1000') | corr_flag | !(title.includes(item_name) | item_name.includes(title)))){
-                console.log("Correct title not first entry")
-                if (info.message.items[cnt].length != 0){
-                  if (info.message.items[cnt].hasOwnProperty('title')){
-                    title = cleanString(info.message.items[cnt].title[0])
-                    title = title.replace('supplemental material for ', '')
-                    corr_flag = info.message.items[cnt].title[0].slice(0, 11) == 'Correction:'
+                while (cnt < info.message.items.length & cnt < max_res & (title.includes('faculty of 1000') | title.includes('f1000') | corr_flag | !(title.includes(item_name) | item_name.includes(title)))){
+                  console.log("Correct title not first entry")
+                  if (info.message.items[cnt].length != 0){
+                    if (info.message.items[cnt].hasOwnProperty('title')){
+                      title = cleanString(info.message.items[cnt].title[0])
+                      title = title.replace('supplemental material for ', '')
+                      corr_flag = info.message.items[cnt].title[0].slice(0, 11) == 'Correction:'
+                    }
                   }
+                  cnt = cnt + 1
+                  }
+                //check if we found a match
+                var match = 1
+                if (cnt == info.message.items.length | cnt == max_res){
+                    match = 0
+                    console.log('Unable to match title')
                 }
-                cnt = cnt + 1
+                cnt = cnt - 1
               }
-
-              //check if we found a match
-              var match = 1
-              if (cnt == info.message.items.length | cnt == max_res){
-                 match = 0
-                 console.log('Unable to match title')
-              }
-              cnt = cnt - 1
 
               if (match == 1){
                 // get relevant names
+                console.log(info)
                 if (info.message.items[cnt].hasOwnProperty('author')){
                   var FA_given = JSON.stringify(info.message.items[cnt].author[0].given)
                   var FA_family = JSON.stringify(info.message.items[cnt].author[0].family)
@@ -207,18 +223,8 @@ $(document).ready(function() {
               }
 
               var race_url = "https://api.nationalize.io?name"
-
-              // first get country
-              // fetch(race_url + "[]=" + FA_given + "&name[]=" + LA_given)
-              // .then( (data) => data.json())
-              // .then( (info) => get_country(info, FA_given, LA_given, FA_family, LA_family))
-              // console.log(race_url + "[]=" + FA_given + "&name[]=" + LA_given)
-
-              // fetch(race_url + '/origin/' + LA_given + '/' + LA_family)
-              // .then( (data) => data.json())
-              // .then( (info) => get_country(info, LA_given, LA_family))
               
-              // // then get race
+              // //  get race
               // fetch(race_url + '/diaspora/' + country + '/' + FA_given + '/' + FA_family)
               // .then( (data) => data.json())
               // .then( (info) => get_race(info, FA_given, FA_family))
@@ -266,19 +272,6 @@ $(document).ready(function() {
                   LA_gen = ""
                   LA_prob = ""
                 }
-              }
-
-              // get the country data from namesor
-              const get_country = (info,  FA_given, LA_given, FA_family, LA_family) => {
-                FA_nat = JSON.stringify(info[0].country[0].country_id)
-                FA_prob = JSON.stringify(info[0].country[0].probability)
-                LA_nat = JSON.stringify(info[1].country[0].country_id)
-                LA_prob = JSON.stringify(info[1].country[0].probability)
-
-                // display
-                $( "<p>First author:" + FA_given + " " + FA_family + " country: " + FA_nat + " " + FA_prob
-                + "; Last author: " + LA_given + " " + LA_family + " country: " + LA_nat + " " + LA_prob +
-                "</p>" ).insertAfter($(this).parent())
               }
             }
           }
