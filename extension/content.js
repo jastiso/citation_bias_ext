@@ -82,6 +82,7 @@ $(document).ready(function() {
             doi = doi.split(' ')[0]
             if (doi.endsWith('.')){
               doi = doi.slice(0,-1)
+              //doi = "'" + doi + "'"
             }
           } 
         }
@@ -99,11 +100,11 @@ $(document).ready(function() {
           
           // check if date is reasonable
           if (doi) {
-            api_req = 'https://api.crossref.org/works?filter=doi:' + encodeURI(doi) + '&query=' + uri + '&select=title,author,published-online&sort=score&order=desc'
+            api_req = 'https://api.crossref.org/works?filter=doi:' + encodeURI(doi) + '&query.bibliographic=' + uri + '&select=title,author,DOI,published-online&sort=score&order=desc'
           } else if ($.isNumeric(date) & date > 1600 & date < currentYear ) {
-            api_req = 'https://api.crossref.org/works?filter=from-pub-date:' + parseInt(date) + ',until-pub-date:' + parseInt(date) + '&query=' + uri + '&select=title,author,published-online&sort=score&order=desc'
+            api_req = 'https://api.crossref.org/works?filter=from-pub-date:' + parseInt(date) + ',until-pub-date:' + parseInt(date) + '&query.bibliographic=' + uri + '&select=title,author,published-online&sort=score&order=desc'
           } else {
-            api_req = 'https://api.crossref.org/works?query=' + uri + '&select=title,author&sort=score&order=desc'
+            api_req = 'https://api.crossref.org/works?query.bibliographic=' + uri + '&select=title,author&sort=score&order=desc'
           }
           //console.log(api_req) // helpful for debugging
 
@@ -114,7 +115,7 @@ $(document).ready(function() {
             // If there is any error you will catch them here
             doi = null
             console.log('First attempt failed. Trying wittout DOI or date.')
-            fetch('https://api.crossref.org/works?query=' + uri + '&select=title,author&sort=score&order=desc')
+            fetch('https://api.crossref.org/works?query.bibliographic=' + uri + '&select=title,author&sort=score&order=desc')
             .then( (data) => data.json())
             .then( (info) => get_names(info))
             .catch(function(error) {
@@ -126,8 +127,13 @@ $(document).ready(function() {
           const get_names = (info) => {
             if (info.status == "ok"){
               if (doi){
+                var api_doi = info.message.items[0].DOI
                 var match = 1
                 var cnt = 0
+                if (api_doi != doi){
+                    match = 0
+                    console.log('Unable to match DOI')
+                }
               } else {
                 // drop F1000 reviews, Corrections, and check if correct match wasnt first result
                 var title = info.message.items[0].title[0].replace('</title>',"").replace('<title>',"")
