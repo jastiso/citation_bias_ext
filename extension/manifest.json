@@ -6,7 +6,7 @@
   "content_scripts": [{
     "css": ["style.css"],
     "js": ["jquery-3.4.1.min.js","content.js"],
-    "matches": ["https://scholar.google.com/*", "https://pubmed.ncbi.nlm.nih.gov/*"]
+    "matches": ["https://scholar.google.*/*", "https://pubmed.ncbi.nlm.nih.gov/*"]
   }],
   "background": {
     "scripts": ["background.js"],
