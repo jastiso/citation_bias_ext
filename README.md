@@ -21,6 +21,7 @@ This project is currently in the beta stage, and therefore is not yet available 
 ## Contributors (Alphabetically)
 * Ann Sizemore Blevins
 * David Lydon-Staley
+* Jennifer Stiso
 * Katharine Crooks
 * Matthew Schaff
 * Ursula Tooley
