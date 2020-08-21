@@ -17,3 +17,10 @@ This project is currently in the beta stage, and therefore is not yet available 
 1. Typically, *gender* is thought of as a self-identity that individual expressed behaviorally. Since our extension uses only first names, we have limited ability to actually capture this definition of gender. It is more accurate to think of the probabilities displayed for gender as *perceived gender*, rather than an estimate of gender identity. Additionally, this extension only shows probabilities for *male* or *female* genders, and incorrectly assumes that all people fall into that binary. 
 2. Gender is determined using genderize.io api, which supports names across many countries taken from social media data. This database was chosen because it can support a large number of queries and is not limited to the US, but is still subject to error. Comparative reports (1. Karimi, F., Wagner, C., Lemmerich, F., Jadidi, M. & Strohmaier, M. Inferring Gender from Names on the Web: A Comparative Evaluation of Gender Detection Methods. in Proceedings of the 25th International Conference Companion on World Wide Web 53–54 (International World Wide Web Conferences Steering Committee, 2016). doi:10.1145/2872518.2889385) listed it's overall accuracy at 82%. While this database was chosen because it contained data from multiple countries, the countries that it performs worst on, in order, are China, South Korea, and Brazil.
 3. Gender bias is not the only type of bias present in citation practices, and the current extension does not account for any kind of intersectionality. We are currently working on adding probabilistic race information to the extension to help mitigate this.
+
+## Contributors (Alphabetically)
+* Ann Sizemore Blevins
+* David Lydon-Staley
+* Katharine Crooks
+* Matthew Schaff
+* Ursula Tooley
