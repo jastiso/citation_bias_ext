@@ -6,7 +6,7 @@
   "content_scripts": [{
     "css": ["style.css"],
     "js": ["jquery-3.4.1.min.js","content.js"],
-    "matches": ["https://scholar.google.com/*", "https://pubmed.ncbi.nlm.nih.gov/*"]
+    "matches": ["https://scholar.google.com/*", "https://scholar.google.fr/*", "https://scholar.google.de/*", "https://scholar.google.co.il/*", "https://scholar.google.be/*", "https://scholar.google.cn/*", "https://scholar.google.es/*", "https://pubmed.ncbi.nlm.nih.gov/*"]
   }],
   "background": {
     "scripts": ["background.js"],
@@ -16,7 +16,7 @@
     "activeTab", "storage"
   ],
   "browser_action": {
-      "default_title": "Citation Bias",
+      "default_title": "Citation Transparency",
       "default_icon": "images/logo.PNG",
       "default_popup": "popup.html"
   },
