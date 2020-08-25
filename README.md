@@ -1,5 +1,5 @@
-# Citation Bias Chrome Extension
-![logo](/extension/images/logo.png)
+# Citation Bias Chrome Extension ![logo](/extension/images/logo.png)
+
 The goal of this project is to create an extension for Google Chrome that will display probabilistic gender information about the first and last authors of papers on Google Scholar and PubMed's search pages.
 
 Motivated from work by J. D. Dworkin, K. A. Linn, E. G. Teich, P. Zurn, R. T. Shinohara, and D. S. Bassett (2020). bioRxiv. doi: https://doi.org/10.1101/2020.01.03.894378
