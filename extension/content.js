@@ -25,39 +25,9 @@ function cleanString(string) {
   return string.toLowerCase()
 }
 
-function rotate(element, degree) {
-  element.css({
-      '-webkit-transform': 'rotate(' + degree + 'deg)',
-      '-moz-transform': 'rotate(' + degree + 'deg)',
-      '-ms-transform': 'rotate(' + degree + 'deg)',
-      '-o-transform': 'rotate(' + degree + 'deg)',
-      'transform': 'rotate(' + degree + 'deg)',
-      'zoom': 1
-  });
-}
-
-function display(percent, element) {
-  var angle = 360 * percent
-
-  if (angle <= 180) {
-      var a1 = angle;
-      var a2 = 0;
-  } else {
-       var a2 = angle - 180;
-       var a1 = 180;
-  }
-
-  // set the transition
-  rotate($(".slice1"), a1);
-  rotate($(".slice2"), a2);
-
-  $( '<div class="box"><div class="circle outer"></div><div class="clip1"><div class="slice1"></div></div><div class="clip2"><div class="slice2"></div></div><div class="circle inner"></div></div>' )
-      .insertAfter(element.parent())
-}
 
 // get all papers on the page
 $(document).ready(function() {
-  
   // $(".gs_ab_md").append( '<div class="wrapper" data-anim="base wrapper"><div class="circle" data-anim="base left"></div><div class="circle" data-anim="base right"></div></div>' )
   chrome.storage.local.get('enabled', data => {
     if (data.enabled) { 
@@ -76,7 +46,7 @@ $(document).ready(function() {
           date = date.split(' - ')[0]
           date = date.slice(date.length - 4)
         } else { // get DOI for pubmed
-          var doi = $(this).siblings(".labs-docsum-citation, .full-citation").children(".labs-docsum-journal-citation, .full-journal-citation").text()
+          var doi = $(this).siblings(".docsum-citation, .full-citation").children(".docsum-journal-citation, .full-journal-citation").text()
           doi = doi.split('doi: ')[1]
           if (doi){
             doi = doi.split(' ')[0]
@@ -90,7 +60,7 @@ $(document).ready(function() {
         // check that isnt a [BOOK] or [CITATION] tag for google scholar, and that this is the 'title' portion of pubmed
         // also checkts that this is not a gs profile results
         var gs_okay = (curr_page.includes('scholar.google') && !($(this).hasClass('gs_ctc') || $(this).hasClass('gs_ctu')))
-        var pm_ok = (curr_page.includes('pubmed') && $(this).hasClass('labs-docsum-title') )
+        var pm_ok = (curr_page.includes('pubmed') && $(this).hasClass('docsum-title') )
         var gs_prof = curr_page.includes('scholar.google') && !($(this).attr('id'))
         if ((gs_okay || pm_ok) && !gs_prof){
 
