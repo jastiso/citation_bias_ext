@@ -224,6 +224,19 @@ $(document).ready(function() {
                   FA_prob = JSON.stringify(info[0].probability)*100
                   LA_gen = JSON.stringify(info[1].gender).replace(/"/g, "")
                   LA_prob = JSON.stringify(info[1].probability)*100
+                  
+                  if (FA_gen == "female"){
+                    FA_gen = "woman"
+                  } else {
+                    FA_gen = "man"
+                  }
+                  if (LA_gen == "female"){
+                    LA_gen = "woman"
+                  } else {
+                    LA_gen = "man"
+                  }
+
+
                   // display
                   $( "<p class='gender'> <img class='logo' src=" + imgURL + " hieght=12 width=12><b> First author:</b> " + FA_given + " " + FA_family + " <b>gender:</b> " + FA_gen + " " + FA_prob
                   + "%<br><img class='logo' src=" + imgURL + " hieght=12 width=12><b> Last author:</b> " + LA_given + " " + LA_family + " <b>gender:</b> " + LA_gen + " " + LA_prob +
@@ -234,6 +247,13 @@ $(document).ready(function() {
                   FA_prob = ""
                   LA_gen = JSON.stringify(info.gender).replace(/"/g, "")
                   LA_prob = JSON.stringify(info.probability)*100
+
+                  if (LA_gen == "female"){
+                    LA_gen = "woman"
+                  } else {
+                    LA_gen = "man"
+                  }
+                
                   // display
                   $( "<p class='gender'> <img src=" + imgURL + " height=16 width=16><b> Last author:</b> " + LA_given + " " + LA_family + " <b>gender:</b> " + LA_gen + " " + LA_prob +
                   "%</p>" ).insertAfter($(this).parent())
@@ -243,6 +263,13 @@ $(document).ready(function() {
                   LA_prob = ""
                   FA_gen = JSON.stringify(info.gender).replace(/"/g, "")
                   FA_prob = JSON.stringify(info.probability)*100
+
+                  if (FA_gen == "female"){
+                    FA_gen = "woman"
+                  } else {
+                    FA_gen = "man"
+                  }
+
                   //display
                   $( "<p class='gender'> <img src=" + imgURL + " hieght=16 width=16><b> First author:</b> " + FA_given + " " + FA_family + " <b>gender:</b> " + FA_gen + " " + FA_prob
                   + "%</p>").insertAfter($(this).parent())

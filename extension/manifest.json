@@ -1,7 +1,7 @@
 {
   "name": "Citation Transparency",
   "description": "Adds probabilistic gender info to Google Scholar and PubMed searches",
-  "version": "0.0.2",
+  "version": "0.0.5",
 
   "content_scripts": [{
     "css": ["style.css"],
@@ -13,7 +13,8 @@
     "persistent": false
   },
   "permissions": [
-    "activeTab"
+    "activeTab", 
+    "storage"
   ],
   "browser_action": {
       "default_title": "Citation Transparency",
