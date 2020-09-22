@@ -1,6 +1,6 @@
 // variables
 const max_res = 100;
-const imgURL = chrome.extension.getURL("images/logo.png");
+const imgURL = browser.runtime.getURL("images/logo.png");
 const currentYear = (new Date).getFullYear();
 
 // functions
@@ -29,7 +29,7 @@ function cleanString(string) {
 // get all papers on the page
 $(document).ready(function() {
   // $(".gs_ab_md").append( '<div class="wrapper" data-anim="base wrapper"><div class="circle" data-anim="base left"></div><div class="circle" data-anim="base right"></div></div>' )
-  chrome.storage.local.get('enabled', data => {
+  browser.storage.local.get('enabled', data => {
     if (data.enabled) { 
       var curr_page = window.location.href
       if (curr_page.includes('scholar.google')){

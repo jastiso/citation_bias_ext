@@ -1,7 +1,7 @@
 var enabled = true; //enable by default
 var myButton = document.getElementById('toggle');
 
-chrome.storage.local.get('enabled', data => {
+browser.storage.local.get('enabled', data => {
     enabled = !!data.enabled;
     myButton.textContent = enabled ? 'Disable' : 'Enable';
 });
@@ -9,5 +9,5 @@ chrome.storage.local.get('enabled', data => {
 myButton.onclick = () => {
     enabled = !enabled;
     myButton.textContent = enabled ? 'Disable' : 'Enable';
-    chrome.storage.local.set({enabled:enabled});
+    browser.storage.local.set({enabled:enabled});
 };
