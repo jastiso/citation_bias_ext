@@ -1,6 +1,8 @@
+var API = chrome || browser;
+
 // variables
 const max_res = 100;
-const imgURL = chrome.extension.getURL("images/logo.png");
+const imgURL = API.runtime.getURL("images/logo.png");
 const currentYear = (new Date).getFullYear();
 
 // functions
@@ -29,7 +31,7 @@ function cleanString(string) {
 // get all papers on the page
 $(document).ready(function() {
   // $(".gs_ab_md").append( '<div class="wrapper" data-anim="base wrapper"><div class="circle" data-anim="base left"></div><div class="circle" data-anim="base right"></div></div>' )
-  chrome.storage.local.get('enabled', data => {
+  API.storage.local.get('enabled', data => {
     if (data.enabled) { 
       var curr_page = window.location.href
       if (curr_page.includes('scholar.google')){
@@ -84,7 +86,7 @@ $(document).ready(function() {
           .catch(function(error) {
             // If there is any error you will catch them here
             doi = null
-            console.log('First attempt failed. Trying wittout DOI or date.')
+            console.log('First attempt failed. Trying without DOI or date.')
             fetch('https://api.crossref.org/works?query.bibliographic=' + uri + '&select=title,author&sort=score&order=desc')
             .then( (data) => data.json())
             .then( (info) => get_names(info))
