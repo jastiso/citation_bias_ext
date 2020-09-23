@@ -14,7 +14,8 @@
   },
   "permissions": [
     "activeTab", 
-    "storage"
+    "storage",
+    "*://api.crossref.org/*"
   ],
   "browser_action": {
       "default_title": "Citation Transparency",
