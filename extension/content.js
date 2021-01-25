@@ -227,13 +227,17 @@ $(document).ready(function() {
                   
                   if (FA_gen == "female"){
                     FA_gen = "woman"
-                  } else {
+                  } else if (FA_gen = "male") {
                     FA_gen = "man"
+                  } else {
+                    FA_gen = "unknown"
                   }
                   if (LA_gen == "female"){
                     LA_gen = "woman"
-                  } else {
+                  } else if (LA_gen = "male") {
                     LA_gen = "man"
+                  } else {
+                    LA_gen = "unknown"
                   }
 
 
