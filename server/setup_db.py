@@ -19,7 +19,7 @@ create_connection('ext.db')
 conn = sqlite3.connect('ext.db')
 c = conn.cursor()
 c.execute('''DROP TABLE IF EXISTS names''')
-c.execute('''CREATE TABLE names (id PRIMARY KEY, name text, prob_m int, prob_w int)''')
+c.execute('''CREATE TABLE names (id PRIMARY KEY, name text, prob_m REAL, prob_w REAL)''')
 
 # get data from python
 names = pd.read_csv('common_names.csv', index_col=0)
