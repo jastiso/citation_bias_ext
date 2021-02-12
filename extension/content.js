@@ -76,15 +76,15 @@ $(document).ready(function() {
           
           // check if date is reasonable
           if (doi) {
-            api_req = 'https://api.crossref.org/works?filter=doi:' + encodeURI(doi) + '\
-            &query.bibliographic=' + uri + '&select=title,author,DOI,published-online&sort=score&order=desc'
+            api_req = 'https://api.crossref.org/works?filter=doi:' + encodeURI(doi) + '&query.bibliographic=' + uri + 
+            '&select=title,author,DOI,published-online&sort=score&order=desc'
           } else if ($.isNumeric(date) & date > 1600 & date < currentYear ) {
-            api_req = 'https://api.crossref.org/works?filter=from-pub-date:' + parseInt(date) + '\
-            ,until-pub-date:' + parseInt(date) + '&query.bibliographic=' + uri + '\
-            &select=title,author,published-online&sort=score&order=desc'
+            api_req = 'https://api.crossref.org/works?filter=from-pub-date:' + parseInt(date) + 
+            ',until-pub-date:' + parseInt(date) + '&query.bibliographic=' + uri + 
+            '&select=title,author,published-online&sort=score&order=desc'
           } else {
-            api_req = 'https://api.crossref.org/works?query.bibliographic=' + uri + '\
-            &select=title,author&sort=score&order=desc'
+            api_req = 'https://api.crossref.org/works?query.bibliographic=' + uri + 
+            '&select=title,author&sort=score&order=desc'
           }
           //console.log(api_req) // helpful for debugging
 
