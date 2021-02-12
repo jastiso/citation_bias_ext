@@ -4,6 +4,9 @@ const imgURL = chrome.extension.getURL("images/logo.png");
 const currentYear = (new Date).getFullYear();
 
 // functions
+
+// sometimes names are formatted with a first initial and a middle name. 
+// if so, take the middle name as the authors first name
 function checkMiddleName(name) {
   if (name.length == 0){
     given = ""
@@ -19,6 +22,7 @@ function checkMiddleName(name) {
   return given
 }
 
+// removes punctuation
 function cleanString(string) {
   string = string.replace(/[!":#$%&'()*+,-./;<=>?@[\]^_`{|}~]/g,"")
   string = string.replace(/[^\x00-\x7F]/g, "")
@@ -28,19 +32,22 @@ function cleanString(string) {
 
 // get all papers on the page
 $(document).ready(function() {
-  // $(".gs_ab_md").append( '<div class="wrapper" data-anim="base wrapper"><div class="circle" data-anim="base left"></div><div class="circle" data-anim="base right"></div></div>' )
+  // enable button - make sure the user turned the extension on
   chrome.storage.local.get('enabled', data => {
     if (data.enabled) { 
       var curr_page = window.location.href
+      // google scholar and pubmed have different class names for paper titles
+      // get the corresponding tag here
       if (curr_page.includes('scholar.google')){
         var item_tag = ".gs_rt"
       } else {
         var item_tag = '.docsum-content'
       }
-
+       
+      // for each paper on the current page
       $(item_tag).children().each(function(){
 
-        // get date
+        // get date if we're on google scholar (which doesnt list DOIs)
         if (curr_page.includes('scholar.google')){
           var date = $(this).parent().siblings(".gs_a").text()
           date = date.split(' - ')[0]
@@ -52,7 +59,6 @@ $(document).ready(function() {
             doi = doi.split(' ')[0]
             if (doi.endsWith('.')){
               doi = doi.slice(0,-1)
-              //doi = "'" + doi + "'"
             }
           } 
         }
@@ -70,14 +76,19 @@ $(document).ready(function() {
           
           // check if date is reasonable
           if (doi) {
-            api_req = 'https://api.crossref.org/works?filter=doi:' + encodeURI(doi) + '&query.bibliographic=' + uri + '&select=title,author,DOI,published-online&sort=score&order=desc'
+            api_req = 'https://api.crossref.org/works?filter=doi:' + encodeURI(doi) + '\
+            &query.bibliographic=' + uri + '&select=title,author,DOI,published-online&sort=score&order=desc'
           } else if ($.isNumeric(date) & date > 1600 & date < currentYear ) {
-            api_req = 'https://api.crossref.org/works?filter=from-pub-date:' + parseInt(date) + ',until-pub-date:' + parseInt(date) + '&query.bibliographic=' + uri + '&select=title,author,published-online&sort=score&order=desc'
+            api_req = 'https://api.crossref.org/works?filter=from-pub-date:' + parseInt(date) + '\
+            ,until-pub-date:' + parseInt(date) + '&query.bibliographic=' + uri + '\
+            &select=title,author,published-online&sort=score&order=desc'
           } else {
-            api_req = 'https://api.crossref.org/works?query.bibliographic=' + uri + '&select=title,author&sort=score&order=desc'
+            api_req = 'https://api.crossref.org/works?query.bibliographic=' + uri + '\
+            &select=title,author&sort=score&order=desc'
           }
           //console.log(api_req) // helpful for debugging
 
+          // query crossref, to get author names from the title
           fetch(api_req)
           .then( (data) => data.json())
           .then( (info) => get_names(info))
@@ -85,7 +96,8 @@ $(document).ready(function() {
             // If there is any error you will catch them here
             doi = null
             console.log('First attempt failed. Trying wittout DOI or date.')
-            fetch('https://api.crossref.org/works?query.bibliographic=' + uri + '&select=title,author&sort=score&order=desc')
+            fetch('https://api.crossref.org/works?query.bibliographic=' + uri + '\
+            &select=title,author&sort=score&order=desc')
             .then( (data) => data.json())
             .then( (info) => get_names(info))
             .catch(function(error) {
@@ -111,16 +123,22 @@ $(document).ready(function() {
                 var corr_flag = info.message.items[0].title[0].replace('</title>',"").replace('<title>',"").slice(0, 11) == 'Correction:'
                 // clean up
                 title = cleanString(title)
+                // check if supplement
                 title = title.replace('supplemental material for ', '')
                 console.log(title)
                 var cnt = 1
                 // clean up the current item
                 var item_name = cleanString($(this).text())
 
-                while (cnt < info.message.items.length & cnt < max_res & (title.includes('faculty of 1000') | title.includes('f1000') | corr_flag | !(item_name.includes(title)))){
+                // look through crossref items for a matching title
+                while (cnt < info.message.items.length & cnt < max_res & 
+                  (title.includes('faculty of 1000') | 
+                  title.includes('f1000') | corr_flag | 
+                  !(item_name.includes(title)))){
                   console.log("Correct title not first entry")
                   if (info.message.items[cnt].length != 0){
                     if (info.message.items[cnt].hasOwnProperty('title')){
+                      //if theres no match, switch to the next entry
                       title = cleanString(info.message.items[cnt].title[0])
                       title = title.replace('supplemental material for ', '')
                       corr_flag = info.message.items[cnt].title[0].slice(0, 11) == 'Correction:'
@@ -242,8 +260,10 @@ $(document).ready(function() {
 
 
                   // display
-                  $( "<p class='gender'> <img class='logo' src=" + imgURL + " hieght=12 width=12><b> First author:</b> " + FA_given + " " + FA_family + " <b>gender:</b> " + FA_gen + " " + FA_prob
-                  + "%<br><img class='logo' src=" + imgURL + " hieght=12 width=12><b> Last author:</b> " + LA_given + " " + LA_family + " <b>gender:</b> " + LA_gen + " " + LA_prob +
+                  $( "<p class='gender'> <img class='logo' src=" + imgURL + " hieght=12 width=12><b>\
+                   First author:</b> " + FA_given + " " + FA_family + " <b>gender:</b> " + FA_gen + " " + FA_prob
+                  + "%<br><img class='logo' src=" + imgURL + " hieght=12 width=12><b> \
+                  Last author:</b> " + LA_given + " " + LA_family + " <b>gender:</b> " + LA_gen + " " + LA_prob +
                   "%</p>" ).insertAfter($(this).parent())
                 } else if (FA_given == "" & LA_given != ""){
                   console.log("Last author found")
@@ -259,7 +279,8 @@ $(document).ready(function() {
                   }
                 
                   // display
-                  $( "<p class='gender'> <img src=" + imgURL + " height=16 width=16><b> Last author:</b> " + LA_given + " " + LA_family + " <b>gender:</b> " + LA_gen + " " + LA_prob +
+                  $( "<p class='gender'> <img src=" + imgURL + " height=16 width=16><b> \
+                  Last author:</b> " + LA_given + " " + LA_family + " <b>gender:</b> " + LA_gen + " " + LA_prob +
                   "%</p>" ).insertAfter($(this).parent())
                 } else if (FA_given != "" & LA_given == ""){
                   console.log("First author found")
@@ -275,7 +296,8 @@ $(document).ready(function() {
                   }
 
                   //display
-                  $( "<p class='gender'> <img src=" + imgURL + " hieght=16 width=16><b> First author:</b> " + FA_given + " " + FA_family + " <b>gender:</b> " + FA_gen + " " + FA_prob
+                  $( "<p class='gender'> <img src=" + imgURL + " hieght=16 width=16><b> \
+                  First author:</b> " + FA_given + " " + FA_family + " <b>gender:</b> " + FA_gen + " " + FA_prob
                   + "%</p>").insertAfter($(this).parent())
                 } else {
                   console.log("No authors found")
