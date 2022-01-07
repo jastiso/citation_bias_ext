@@ -1,7 +1,7 @@
 {
   "name": "Citation Transparency",
   "description": "Adds probabilistic gender info to Google Scholar and PubMed searches",
-  "version": "0.0.6",
+  "version": "0.0.7",
 
   "content_scripts": [{
     "css": ["style.css"],
@@ -21,6 +21,6 @@
   "web_accessible_resources": [
     "images/logo.png"
   ],
-  "manifest_version": 2,
+  "manifest_version": 3,
   "content_security_policy": "script-src 'self' https://www.google-analytics.com; object-src 'self'"
 }
