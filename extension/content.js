@@ -1,6 +1,6 @@
 // variables
 const max_res = 100;
-const imgURL = chrome.extension.getURL("images/logo.png");
+const imgURL = chrome.runtime.getURL("images/logo.png");
 const currentYear = (new Date).getFullYear();
 
 // functions
