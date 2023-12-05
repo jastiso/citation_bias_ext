@@ -4,10 +4,9 @@ The goal of this project is to create an extension for Google Chrome that will d
 
 Motivated from work by J. D. Dworkin, K. A. Linn, E. G. Teich, P. Zurn, R. T. Shinohara, and D. S. Bassett (2020). bioRxiv. doi: https://doi.org/10.1101/2020.01.03.894378
 
-If you would like to receive emails when I update the extension while it is still in its beta form, shoot me an emaiL (get my contact info here: http://www.jenniferstiso.com/)
 
 ## Instructions
-This project is currently in the beta stage, and therefore is not yet available on the Chrome Extension store. To use it, you must add it in "developer mode".
+This project is available on the Chrome Extension store [here](https://chromewebstore.google.com/detail/citation-transparency/cepnbdbhabaljgecaddglhhcgajphbcf). To make and test changes not included in the published version, you must add it in "developer mode".
 1. Download this GitHub repository (click the green "clone or download button" followed by "Download as zip"). Unzip the folder.
 2. Open the Extension Management page by navigating to chrome://extensions.
 3. Enable Developer Mode by clicking the toggle switch in the top right corner next to Developer mode.
